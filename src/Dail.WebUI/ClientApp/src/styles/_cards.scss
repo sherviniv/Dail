@@ -17,9 +17,9 @@
     padding: 0.75rem 3.25rem 0.75rem 1.25rem;
     &::after {
       position: absolute;
-      right: 0;
+      left: 0;
       top: 0;
-      padding-right: 1.725rem;
+      padding-left: 1.725rem;
       line-height: 51px;
       font-weight: 900;
       content: '\f107';

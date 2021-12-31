@@ -9,7 +9,7 @@
         &::after {
           width: 1rem;
           text-align: center;
-          float: right;
+          float: left;
           vertical-align: 0;
           border: 0;
           font-weight: 900;
@@ -29,8 +29,8 @@
       .badge-counter {
         position: absolute;
         transform: scale(0.7);
-        transform-origin: top right;
-        right: .25rem;
+        transform-origin: top left;
+        left: .25rem;
         margin-top: -.25rem;
       }
       .img-profile {

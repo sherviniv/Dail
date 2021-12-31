@@ -30,7 +30,7 @@
         // Accordion
         .collapse {
             position: absolute;
-            left: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
+            right: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
             z-index: 1;
             top: 2px;
             // Grow In Animation
@@ -102,7 +102,7 @@
             font-weight: 900;
             content: '\f104';
             font-family: 'Font Awesome 5 Free';
-            margin-right: 0.1rem;
+            margin-left: 0.1rem;
         }
 
         &:hover {
@@ -121,7 +121,7 @@
         #sidebarToggle::after {
             content: '\f105';
             font-family: 'Font Awesome 5 Free';
-            margin-left: 0.25rem;
+            margin-right: 0.25rem;
         }
 
         .sidebar-card {
@@ -168,8 +168,8 @@
         font-size: $font-size-sm;
         border-radius: $border-radius;
         color: fade-out($white, 0.2);
-        margin-left: 1rem;
         margin-right: 1rem;
+        margin-left: 1rem;
         margin-bottom: 1rem;
         padding: 1rem;
         background-color: fade-out($black, 0.9);
@@ -196,7 +196,7 @@
             // Accordion
             .collapse {
                 position: relative;
-                left: 0;
+                right: 0;
                 z-index: 1;
                 top: 0;
                 animation: none;
@@ -220,13 +220,13 @@
             .nav-link {
                 display: block;
                 width: 100%;
-                text-align: left;
+                text-align: right;
                 padding: 1rem;
                 width: $sidebar-base-width;
 
                 i {
                     font-size: 0.85rem;
-                    margin-right: 0.25rem;
+                    margin-left: 0.25rem;
                 }
 
                 span {
@@ -239,7 +239,7 @@
                     &::after {
                         width: 1rem;
                         text-align: center;
-                        float: right;
+                        float: left;
                         vertical-align: 0;
                         border: 0;
                         font-weight: 900;
@@ -265,7 +265,7 @@
         }
 
         .sidebar-heading {
-            text-align: left;
+            text-align: right;
         }
 
         &.toggled {
@@ -277,7 +277,7 @@
                 // Accordion
                 .collapse {
                     position: absolute;
-                    left: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
+                    right: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
                     z-index: 1;
                     top: 2px;
                     // Grow In Animation for Toggled State
@@ -316,7 +316,7 @@
                     }
 
                     i {
-                        margin-right: 0;
+                        margin-left: 0;
                     }
 
                     &[data-toggle="collapse"]::after {

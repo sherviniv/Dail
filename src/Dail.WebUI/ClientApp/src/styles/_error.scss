@@ -20,7 +20,7 @@
 .error:after {
   content: attr(data-text);
   position: absolute;
-  left: 2px;
+  right: 2px;
   text-shadow: -1px 0 $red;
   top: 0;
   color: $gray-800;
@@ -41,7 +41,7 @@
 .error:before {
   content: attr(data-text);
   position: absolute;
-  left: -2px;
+  right: -2px;
   text-shadow: 1px 0 $blue;
   top: 0;
   color: $gray-800;
