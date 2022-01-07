@@ -40,31 +40,15 @@
          url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Medium.ttf') format('truetype');
     font-weight: 500;
   }
-  
-  @font-face {
-    font-family: Vazir;
-    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Thin.eot');
-    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Thin.eot?#iefix') format('embedded-opentype'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Thin.woff2') format('woff2'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Thin.woff') format('woff'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Thin.ttf') format('truetype');
-    font-weight: 100;
-  }
-  
-  @font-face {
-    font-family: Vazir;
-    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Black.eot');
-    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Black.eot?#iefix') format('embedded-opentype'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Black.woff2') format('woff2'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Black.woff') format('woff'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir-Black.ttf') format('truetype');
-    font-weight: 900;
-  }
  
 *{
     text-align: right;
     font-family: "Vazir" ;
 
+}
+
+.sidebar{
+ min-height: 100%;
 }
 
 .navbar-nav {
