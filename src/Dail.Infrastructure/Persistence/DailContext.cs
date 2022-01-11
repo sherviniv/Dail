@@ -3,6 +3,7 @@ using Dail.Domain.Common;
 using Dail.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Dail.Infrastructure.Persistence;
 
@@ -35,5 +36,12 @@ internal class DailContext : IdentityDbContext<ApplicationUser>, IDailContext
             }
         }
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(builder);
+        builder.HasDefaultSchema("Dail");
     }
 }

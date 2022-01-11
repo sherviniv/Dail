@@ -20,6 +20,7 @@ public static class DependencyContainer
         services.Configure<AppSettings>(appSettingsSection);
         var appSettings = appSettingsSection.Get<AppSettings>();
 
+        services.AddEntityFrameworkSqlServer();
         services.AddDbContext<DailContext>((serviceProvider, options) =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
