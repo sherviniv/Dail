@@ -1,6 +1,15 @@
+using Dail.Application;
+using Dail.Application.Common.Interfaces;
+using Dail.Infrastructure;
+using Dail.WebUI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddControllersWithViews();
 
