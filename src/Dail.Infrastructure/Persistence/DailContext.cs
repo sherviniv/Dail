@@ -1,0 +1,39 @@
+﻿using Dail.Application.Common.Interfaces;
+using Dail.Domain.Common;
+using Dail.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace Dail.Infrastructure.Persistence;
+
+internal class DailContext : IdentityDbContext<ApplicationUser>, IDailContext
+{
+    private readonly ICurrentUserService _currentUserService;
+
+    public DailContext(
+        DbContextOptions<DailContext> options,
+        ICurrentUserService currentUserService) : base(options)
+    {
+        _currentUserService = currentUserService;
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+        {
+            DateTime now = DateTime.UtcNow;
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedBy = _currentUserService.UserId;
+                    entry.Entity.Created = now;
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                    entry.Entity.LastModified = now;
+                    break;
+            }
+        }
+        return base.SaveChangesAsync(cancellationToken);
+    }
+}
