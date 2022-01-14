@@ -41,6 +41,7 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
+    app.UseOpenApi();
     app.UseSwaggerUi3(settings =>
     {
         settings.Path = "/api";

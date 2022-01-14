@@ -5,13 +5,13 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{70E61172-737B-451A-9FE4-2EEA4EE4CB81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dail.WebUI", "src\Dail.WebUI\Dail.WebUI.csproj", "{C603B04F-62C8-4058-BFE6-996075BAC20C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dail.WebUI", "src\Dail.WebUI\Dail.WebUI.csproj", "{C603B04F-62C8-4058-BFE6-996075BAC20C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dail.Domain", "src\Dail.Domain\Dail.Domain.csproj", "{21BF2828-E3B9-4D0A-9CA9-18A16EB58C1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dail.Domain", "src\Dail.Domain\Dail.Domain.csproj", "{21BF2828-E3B9-4D0A-9CA9-18A16EB58C1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dail.Application", "src\Dail.Application\Dail.Application.csproj", "{59CC7901-C4B1-4256-87E9-CD812B7ED80E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dail.Application", "src\Dail.Application\Dail.Application.csproj", "{59CC7901-C4B1-4256-87E9-CD812B7ED80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dail.Infrastructure", "src\Dail.Infrastructure\Dail.Infrastructure.csproj", "{E9CD11C4-85BF-42E9-8A12-C5189C571F00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dail.Infrastructure", "src\Dail.Infrastructure\Dail.Infrastructure.csproj", "{E9CD11C4-85BF-42E9-8A12-C5189C571F00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
