@@ -102,13 +102,13 @@ internal class IdentityService : IIdentityService
 
         if (user == null)
             throw new DailException(MessageCodes.InvalidCredentials,
-                      _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.BadRequest);
+                      _localizer.GetString(MessageCodes.InvalidCredentials)?.Value ?? "", System.Net.HttpStatusCode.BadRequest);
 
         var result = await _userManager.CheckPasswordAsync(user, model.Password);
 
         if (!result)
             throw new DailException(MessageCodes.InvalidCredentials,
-                      _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.BadRequest);
+                      _localizer.GetString(MessageCodes.InvalidCredentials)?.Value ?? "", System.Net.HttpStatusCode.BadRequest);
 
         var roles = await _userManager.GetRolesAsync(user);
 

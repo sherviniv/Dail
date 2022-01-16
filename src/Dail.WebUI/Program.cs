@@ -1,11 +1,17 @@
 using Dail.Application;
 using Dail.Application.Common.Interfaces;
 using Dail.Infrastructure;
+using Dail.WebUI.Middlewares;
 using Dail.WebUI.Services;
 using Microsoft.OpenApi.Models;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
+
+builder.Services.AddLocalization();
+builder.Services.AddControllersWithViews()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
 
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -48,6 +54,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// localization
+var cultures = new List<CultureInfo> { new("en"), new("fa") };
+app.UseRequestLocalization(options =>
+{
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("fa");
+    options.SupportedCultures = cultures;
+    options.SupportedUICultures = cultures;
+});
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -55,6 +70,7 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
+app.UseCustomErrorHandlerMiddleware();
 app.UseStaticFiles();
 app.UseRouting();
 
