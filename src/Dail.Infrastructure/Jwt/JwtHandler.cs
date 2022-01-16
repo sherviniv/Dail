@@ -18,7 +18,7 @@ namespace Dail.Infrastructure.Jwt
             _appSettings = appSettings.Value;
         }
 
-        public string Generate(ApplicationUser user, List<string> roles)
+        public string GenerateToken(ApplicationUser user, List<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Jwt.Key);

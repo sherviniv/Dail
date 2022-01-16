@@ -9,9 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Dail.Infrastructure.Services;
 
 namespace Dail.Infrastructure;
-
 public static class DependencyContainer
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -64,5 +64,6 @@ public static class DependencyContainer
         services.AddScoped<IDailContext>(provider => provider.GetService<DailContext>()!);
 
         services.AddScoped<IJwtHandler, JwtHandler>();
+        services.AddScoped<IDateTime, DateTimeService>();
     }
 }
