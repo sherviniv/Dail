@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Dail.Domain\Dail.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
