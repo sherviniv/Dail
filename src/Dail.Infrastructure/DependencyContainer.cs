@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Dail.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dail.Infrastructure;
 public static class DependencyContainer
@@ -19,6 +20,7 @@ public static class DependencyContainer
         var appSettingsSection = configuration.GetSection("AppSettings");
         services.Configure<AppSettings>(appSettingsSection);
         var appSettings = appSettingsSection.Get<AppSettings>();
+
 
         services.AddEntityFrameworkSqlServer();
         services.AddDbContext<DailContext>((serviceProvider, options) =>
@@ -42,7 +44,8 @@ public static class DependencyContainer
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
-        }).AddEntityFrameworkStores<DailContext>();
+        }).AddRoles<IdentityRole>()
+          .AddEntityFrameworkStores<DailContext>();
         services.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,5 +68,21 @@ public static class DependencyContainer
 
         services.AddScoped<IJwtHandler, JwtHandler>();
         services.AddScoped<IDateTime, DateTimeService>();
+    }
+
+    public static async Task SeedDatabase(this IServiceProvider service)
+    {
+        using (var scope = service.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<DailContext>();
+            if (context.Database.IsSqlServer())
+            {
+                context.Database.Migrate();
+            }
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await DailContextSeed.SeedRolesAsync(roleManager);
+            await DailContextSeed.SeedDefaultUserAsync(userManager);
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Dail.Application.Common.Exceptions;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Net;
