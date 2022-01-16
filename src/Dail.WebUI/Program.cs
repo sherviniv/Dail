@@ -2,34 +2,42 @@ using Dail.Application;
 using Dail.Application.Common.Interfaces;
 using Dail.Infrastructure;
 using Dail.WebUI.Services;
-using NSwag;
-using NSwag.Generation.Processors.Security;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
 
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddOpenApiDocument(configure =>
+builder.Services.AddSwaggerGen(c =>
 {
-    configure.Title = "DAIL API";
-    configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Type = OpenApiSecuritySchemeType.ApiKey,
+        In = ParameterLocation.Header,
+        Description = "Please insert JWT with Bearer into field",
         Name = "Authorization",
-        In = OpenApiSecurityApiKeyLocation.Header,
-        Description = "Type into the textbox: Bearer {your JWT token}."
+        Type = SecuritySchemeType.ApiKey
     });
-
-    configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                  new OpenApiSecurityScheme
+                  {
+                    Reference = new OpenApiReference
+                    {
+                      Type = ReferenceType.SecurityScheme,
+                      Id = "Bearer"
+                    }
+                  },
+                   new string[] { }
+                 }
+                });
 });
-
 
 var app = builder.Build();
 
@@ -39,15 +47,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-else
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseOpenApi();
-    app.UseSwaggerUi3(settings =>
-    {
-        settings.Path = "/api";
-        settings.DocumentPath = "/api/specification.json";
-    });
-}
+    c.SwaggerEndpoint($"/swagger/v1/swagger.json", "Dail");
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
