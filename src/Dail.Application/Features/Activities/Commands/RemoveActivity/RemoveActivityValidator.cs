@@ -5,16 +5,10 @@ using Microsoft.Extensions.Localization;
 using System.Text;
 
 namespace Dail.Application.Features.Activities.Commands.AddActivity;
-public class ModfiyActivityValidator : AbstractValidator<ModfiyActivityCommand>
+public class RemoveActivityValidator : AbstractValidator<RemoveActivityCommand>
 {
-    public ModfiyActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
+    public RemoveActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
     {
-        RuleFor(p => p.Id)
-               .NotNull()
-               .NotEmpty()
-               .GreaterThan(0)
-               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
-
         RuleFor(p => p.Title)
                .NotNull()
                .NotEmpty()
