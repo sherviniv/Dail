@@ -4,10 +4,10 @@ using FluentValidation;
 using Microsoft.Extensions.Localization;
 using System.Text;
 
-namespace Dail.Application.Features.Activities.Commands.ModfiyActivity;
-public class ModfiyActivityValidator : AbstractValidator<ModfiyActivityCommand>
+namespace Dail.Application.Features.Activities.Commands.ModifyActivity;
+public class ModifyActivityValidator : AbstractValidator<ModifyActivityCommand>
 {
-    public ModfiyActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
+    public ModifyActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
     {
         RuleFor(p => p.Id)
                .NotNull()

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
-namespace Dail.Application.Features.Activities.Commands.ModfiyActivity;
-public class ModfiyActivityCommand : IRequest<int>
+namespace Dail.Application.Features.Activities.Commands.ModifyActivity;
+public class ModifyActivityCommand : IRequest<int>
 {
     public int Id { get; set; }
     public string Title { get; set; }

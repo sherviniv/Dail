@@ -85,3 +85,4 @@ public static class DependencyContainer
             await DailContextSeed.SeedDefaultUserAsync(userManager);
         }
     }
+}

@@ -7,15 +7,15 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Dail.Application.Features.Activities.Commands.ModfiyActivity;
-public class ModfiyActivityCommandHandler : IRequestHandler<ModfiyActivityCommand, int>
+namespace Dail.Application.Features.Activities.Commands.ModifyActivity;
+public class ModifyActivityCommandHandler : IRequestHandler<ModifyActivityCommand, int>
 {
     private readonly IDailContext _context;
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
     private readonly IStringLocalizer<MessagesLocalizer> _localizer;
 
-    public ModfiyActivityCommandHandler(
+    public ModifyActivityCommandHandler(
         IDailContext context,
         IMapper mapper,
         IStringLocalizer<MessagesLocalizer> localizer,
@@ -33,7 +33,7 @@ public class ModfiyActivityCommandHandler : IRequestHandler<ModfiyActivityComman
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<int> Handle(ModfiyActivityCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(ModifyActivityCommand request, CancellationToken cancellationToken)
     {
         var model = await _context.Activities.FirstOrDefaultAsync();
 
