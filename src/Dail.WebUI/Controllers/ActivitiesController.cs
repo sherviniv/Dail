@@ -22,8 +22,8 @@ public class ActivitiesController : ApiController
     }
 
     [HttpGet]
-    public async Task<IList<ActivityViewModel>> GetActivities(GetUserActivitiesQuery command)
-    => await _mediatr.Send(command);
+    public async Task<IList<ActivityViewModel>> GetActivities()
+    => await _mediatr.Send(new GetUserActivitiesQuery());
 
     [HttpPost]
     public async Task<int> Add(AddActivityCommand command)

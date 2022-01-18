@@ -19,6 +19,9 @@ public class Activity : AuditableEntity
     [MaxLength(7)]
     public string Color { get; set; }
     public DayOfWeek Day { get; set; }
-    public TimeOnly StartTime { get; set; }
-    public TimeOnly EndTime { get; set; }
+
+    [MaxLength(11)]
+    public string StartTime { get; set; }
+    [MaxLength(11)]
+    public string EndTime { get; set; }
 }

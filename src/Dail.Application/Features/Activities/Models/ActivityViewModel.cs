@@ -7,6 +7,6 @@ public class ActivityViewModel
     public string Description { get; set; }
     public string Color { get; set; }
     public DayOfWeek Day { get; set; }
-    public TimeOnly StartTime { get; set; }
-    public TimeOnly EndTime { get; set; }
+    public string StartTime { get; set; }
+    public string EndTime { get; set; }
 }

@@ -16,6 +16,14 @@ public static class DailContextSeed
             await userManager.CreateAsync(defaultUser, "Pass@123456");
             await userManager.AddToRoleAsync(defaultUser, SystemRoles.Admin);
         }
+
+        var defaultDailUser = new ApplicationUser { UserName = "dail", Email = "dail@dail.com" };
+
+        if (userManager.Users.All(u => u.UserName != defaultDailUser.UserName))
+        {
+            await userManager.CreateAsync(defaultDailUser, "Pass@123456");
+            await userManager.AddToRoleAsync(defaultDailUser, SystemRoles.DailUser);
+        }
     }
 
     public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
