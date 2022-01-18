@@ -23,7 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Activities\Commands\ModfiyActivity\" />
+    <Folder Include="Features\Activities\Commands\RemoveActivity\" />
+    <Folder Include="Features\Activities\Models\" />
+    <Folder Include="Features\Activities\Queries\" />
   </ItemGroup>
 
 </Project>
