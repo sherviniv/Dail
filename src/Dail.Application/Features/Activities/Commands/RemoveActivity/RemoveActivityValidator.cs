@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.Extensions.Localization;
 using System.Text;
 
-namespace Dail.Application.Features.Activities.Commands.AddActivity;
+namespace Dail.Application.Features.Activities.Commands.RemoveActivity;
 public class RemoveActivityValidator : AbstractValidator<RemoveActivityCommand>
 {
     public RemoveActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)

@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Dail.Application.Features.Activities.Commands.AddActivity;
+namespace Dail.Application.Features.Activities.Commands.RemoveActivity;
 public class RemoveActivityCommandHandler : IRequestHandler<RemoveActivityCommand, Unit>
 {
     private readonly IDailContext _context;
@@ -16,7 +16,7 @@ public class RemoveActivityCommandHandler : IRequestHandler<RemoveActivityComman
 
     public RemoveActivityCommandHandler(
         IDailContext context,
-        IStringLocalizer<MessagesLocalizer> localizer, 
+        IStringLocalizer<MessagesLocalizer> localizer,
         ICurrentUserService currentUserService)
     {
         _context = context;
@@ -34,7 +34,7 @@ public class RemoveActivityCommandHandler : IRequestHandler<RemoveActivityComman
     {
         var model = await _context.Activities.FirstOrDefaultAsync();
 
-        if(model == null) 
+        if (model == null)
         {
             throw new DailException(MessageCodes.NotFound,
                    _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.NotFound);

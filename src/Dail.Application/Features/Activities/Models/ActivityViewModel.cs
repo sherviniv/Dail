@@ -1,7 +1,6 @@
-﻿using MediatR;
+﻿namespace Dail.Application.Features.Activities.Models;
 
-namespace Dail.Application.Features.Activities.Commands.ModfiyActivity;
-public class ModfiyActivityCommand : IRequest<int>
+public class ActivityViewModel
 {
     public int Id { get; set; }
     public string Title { get; set; }

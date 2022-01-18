@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Dail.Application.Features.Activities.Commands.AddActivity;
+namespace Dail.Application.Features.Activities.Commands.ModfiyActivity;
 public class ModfiyActivityCommandHandler : IRequestHandler<ModfiyActivityCommand, int>
 {
     private readonly IDailContext _context;
@@ -18,7 +18,7 @@ public class ModfiyActivityCommandHandler : IRequestHandler<ModfiyActivityComman
     public ModfiyActivityCommandHandler(
         IDailContext context,
         IMapper mapper,
-        IStringLocalizer<MessagesLocalizer> localizer, 
+        IStringLocalizer<MessagesLocalizer> localizer,
         ICurrentUserService currentUserService)
     {
         _context = context;
@@ -37,7 +37,7 @@ public class ModfiyActivityCommandHandler : IRequestHandler<ModfiyActivityComman
     {
         var model = await _context.Activities.FirstOrDefaultAsync();
 
-        if(model == null) 
+        if (model == null)
         {
             throw new DailException(MessageCodes.NotFound,
                    _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.NotFound);

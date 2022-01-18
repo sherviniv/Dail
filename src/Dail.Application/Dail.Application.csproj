@@ -22,10 +22,4 @@
     <ProjectReference Include="..\Dail.Domain\Dail.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Activities\Commands\RemoveActivity\" />
-    <Folder Include="Features\Activities\Models\" />
-    <Folder Include="Features\Activities\Queries\" />
-  </ItemGroup>
-
 </Project>

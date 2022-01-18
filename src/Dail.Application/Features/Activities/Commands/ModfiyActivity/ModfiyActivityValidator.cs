@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.Extensions.Localization;
 using System.Text;
 
-namespace Dail.Application.Features.Activities.Commands.AddActivity;
+namespace Dail.Application.Features.Activities.Commands.ModfiyActivity;
 public class ModfiyActivityValidator : AbstractValidator<ModfiyActivityCommand>
 {
     public ModfiyActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
