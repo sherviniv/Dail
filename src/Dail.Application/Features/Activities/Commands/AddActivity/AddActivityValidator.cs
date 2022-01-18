@@ -10,9 +10,23 @@ public class AddActivityValidator : AbstractValidator<AddActivityCommand>
 {
     public AddActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
     {
-        RuleFor(p => p.)
+        RuleFor(p => p.Title)
                .NotNull()
                .NotEmpty()
-               .WithMessage(localizer.GetString(MessageCodes.req)?.Value);
+               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
+
+        RuleFor(p => p.Description)
+               .MaximumLength(1024)
+               .WithMessage(string.Format(localizer.GetString(MessageCodes.IsRequired).Value, 1024));
+
+        RuleFor(p => p.StartTime)
+               .NotNull()
+               .NotEmpty()
+               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
+
+        RuleFor(p => p.EndTime)
+               .NotNull()
+               .NotEmpty()
+               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
     }
 }

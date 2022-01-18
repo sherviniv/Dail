@@ -9,23 +9,10 @@ public class RemoveActivityValidator : AbstractValidator<RemoveActivityCommand>
 {
     public RemoveActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
     {
-        RuleFor(p => p.Title)
+        RuleFor(p => p.Id)
                .NotNull()
                .NotEmpty()
-               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
-
-        RuleFor(p => p.Description)
-               .MaximumLength(1024)
-               .WithMessage(string.Format(localizer.GetString(MessageCodes.IsRequired).Value, 1024));
-
-        RuleFor(p => p.StartTime)
-               .NotNull()
-               .NotEmpty()
-               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
-
-        RuleFor(p => p.EndTime)
-               .NotNull()
-               .NotEmpty()
+               .GreaterThan(0)
                .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
     }
 }
