@@ -19,7 +19,6 @@ internal class IdentityService : IIdentityService
     private readonly IMapper _mapper;
     private readonly IStringLocalizer<MessagesLocalizer> _localizer;
 
-
     public IdentityService(
         UserManager<ApplicationUser> userManager,
         IJwtHandler jwtHandler,
