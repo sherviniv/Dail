@@ -2,12 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Dail.Domain.Entities;
-
 public class Activity : AuditableEntity
 {
     public int Id { get; set; }
 
     [Required]
+    [MaxLength(256)]
     public string Title { get; set; }
 
     [MaxLength(1024)]
@@ -18,10 +18,7 @@ public class Activity : AuditableEntity
     /// </summary>
     [MaxLength(7)]
     public string Color { get; set; }
-    public DayOfWeek Day { get; set; }
 
-    [MaxLength(11)]
-    public string StartTime { get; set; }
-    [MaxLength(11)]
-    public string EndTime { get; set; }
+    public int? ActivityTimeId { get; set; }
+    public ActivityTime ActivityTime { get; set; }
 }

@@ -19,6 +19,7 @@ internal class DailContext : IdentityDbContext<ApplicationUser>, IDailContext
     }
 
     public DbSet<Activity> Activities { get; set; }
+    public DbSet<ActivityTime> ActivityTimes { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
