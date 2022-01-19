@@ -19,7 +19,7 @@ public class DailException : Exception
     {
     }
 
-    public DailException(string code, string message, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, params object[] args) : this(null, code, message, args)
+    public DailException(string code, string message, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, params object[] args) : this(null!, code, message, args)
     {
         StatusCode = httpStatusCode;
     }
