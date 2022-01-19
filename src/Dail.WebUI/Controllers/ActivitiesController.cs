@@ -1,8 +1,8 @@
 ﻿using Dail.Application.Features.Activities.Commands.AssignActivity;
-using Dail.Application.Features.Activities.Commands.ModifyActivity;
-using Dail.Application.Features.Activities.Commands.RemoveActivity;
 using Dail.Application.Features.Activities.Models;
 using Dail.Application.Features.Activities.Queries.GetUserActivities;
+using Dail.Application.Features.ActivityTimes.Commands.ModifyActivityTime;
+using Dail.Application.Features.ActivityTimes.Commands.RemoveActivityTime;
 using Dail.Domain.Constants;
 using Dail.WebUI.Base;
 using MediatR;
@@ -30,10 +30,10 @@ public class ActivitiesController : ApiController
         => await _mediatr.Send(command);
 
     [HttpPut]
-    public async Task<int> Modfiy(ModifyActivityCommand command)
+    public async Task<int> Modfiy(ModifyActivityTimeCommand command)
         => await _mediatr.Send(command);
 
     [HttpDelete]
-    public async Task<Unit> Remove(RemoveActivityCommand command)
+    public async Task<Unit> Remove(RemoveActivityTimeCommand command)
         => await _mediatr.Send(command);
 }

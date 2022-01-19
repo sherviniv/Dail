@@ -32,7 +32,7 @@ public class RemoveActivityCommandHandler : IRequestHandler<RemoveActivityComman
     /// <returns></returns>
     public async Task<Unit> Handle(RemoveActivityCommand request, CancellationToken cancellationToken)
     {
-        var model = await _context.Activities.FirstOrDefaultAsync();
+        var model = await _context.Activities.FirstOrDefaultAsync(c=> c.Id == request.Id);
 
         if (model == null)
         {

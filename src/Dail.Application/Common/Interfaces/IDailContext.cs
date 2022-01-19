@@ -6,6 +6,7 @@ namespace Dail.Application.Common.Interfaces;
 public interface IDailContext
 {
     DbSet<Activity> Activities { get; set; }
+    DbSet<ActivityTime> ActivityTimes { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

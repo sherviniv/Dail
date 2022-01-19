@@ -7,15 +7,15 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Dail.Application.Features.Activities.Commands.ModifyActivity;
-public class ModifyActivityCommandHandler : IRequestHandler<ModifyActivityCommand, int>
+namespace Dail.Application.Features.ActivityTimes.Commands.ModifyActivityTime;
+public class ModifyActivityTimeCommandHandler : IRequestHandler<ModifyActivityTimeCommand, int>
 {
     private readonly IDailContext _context;
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
     private readonly IStringLocalizer<MessagesLocalizer> _localizer;
 
-    public ModifyActivityCommandHandler(
+    public ModifyActivityTimeCommandHandler(
         IDailContext context,
         IMapper mapper,
         IStringLocalizer<MessagesLocalizer> localizer,
@@ -33,9 +33,9 @@ public class ModifyActivityCommandHandler : IRequestHandler<ModifyActivityComman
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<int> Handle(ModifyActivityCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(ModifyActivityTimeCommand request, CancellationToken cancellationToken)
     {
-        var model = await _context.Activities.FirstOrDefaultAsync(c=> c.Id == request.Id);
+        var model = await _context.ActivityTimes.FirstOrDefaultAsync(c=> c.Id == request.Id);
 
         if (model == null)
         {

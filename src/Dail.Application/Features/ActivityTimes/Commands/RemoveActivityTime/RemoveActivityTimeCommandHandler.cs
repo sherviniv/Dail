@@ -7,33 +7,30 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Dail.Application.Features.Activities.Commands.ModifyActivity;
-public class ModifyActivityCommandHandler : IRequestHandler<ModifyActivityCommand, int>
+namespace Dail.Application.Features.ActivityTimes.Commands.RemoveActivityTime;
+public class RemoveActivityTimeCommandHandler : IRequestHandler<RemoveActivityTimeCommand, Unit>
 {
     private readonly IDailContext _context;
-    private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
     private readonly IStringLocalizer<MessagesLocalizer> _localizer;
 
-    public ModifyActivityCommandHandler(
+    public RemoveActivityTimeCommandHandler(
         IDailContext context,
-        IMapper mapper,
         IStringLocalizer<MessagesLocalizer> localizer,
         ICurrentUserService currentUserService)
     {
         _context = context;
-        _mapper = mapper;
         _localizer = localizer;
         _currentUserService = currentUserService;
     }
 
     /// <summary>
-    /// Modify selected activity
+    /// removes selected activity
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<int> Handle(ModifyActivityCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RemoveActivityTimeCommand request, CancellationToken cancellationToken)
     {
         var model = await _context.Activities.FirstOrDefaultAsync(c=> c.Id == request.Id);
 
@@ -42,6 +39,7 @@ public class ModifyActivityCommandHandler : IRequestHandler<ModifyActivityComman
             throw new DailException(MessageCodes.NotFound,
                    _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.NotFound);
         }
+
         //Each user has only access to their own Activities
         if (model.CreatedBy != _currentUserService.UserId)
         {
@@ -49,8 +47,8 @@ public class ModifyActivityCommandHandler : IRequestHandler<ModifyActivityComman
                    _localizer.GetString(MessageCodes.AccessDenied)?.Value ?? "", System.Net.HttpStatusCode.Forbidden);
         }
 
-        _mapper.Map(request, model);
+        _context.Activities.Remove(model);
         await _context.SaveChangesAsync();
-        return model.Id;
+        return Unit.Value;
     }
 }
