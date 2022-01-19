@@ -1,4 +1,4 @@
-﻿using Dail.Application.Features.Activities.Commands.AddActivity;
+﻿using Dail.Application.Features.Activities.Commands.AssignActivity;
 using Dail.Application.Features.Activities.Commands.ModifyActivity;
 using Dail.Application.Features.Activities.Commands.RemoveActivity;
 using Dail.Application.Features.Activities.Models;
@@ -26,7 +26,7 @@ public class ActivitiesController : ApiController
     => await _mediatr.Send(new GetUserActivitiesQuery());
 
     [HttpPost]
-    public async Task<int> Add(AddActivityCommand command)
+    public async Task<int> Add(AssignActivityCommand command)
         => await _mediatr.Send(command);
 
     [HttpPut]
