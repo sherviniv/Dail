@@ -1,4 +1,4 @@
-﻿using Dail.Application.Features.Activities.Commands.AssignActivity;
+﻿using Dail.Application.Features.Activities.Commands.AddActivity;
 using Dail.Application.Features.Activities.Models;
 using Dail.Application.Features.Activities.Queries.GetUserActivities;
 using Dail.Application.Features.ActivityTimes.Commands.ModifyActivityTime;
@@ -23,10 +23,10 @@ public class ActivitiesController : ApiController
 
     [HttpGet]
     public async Task<IList<ActivityViewModel>> GetActivities()
-    => await _mediatr.Send(new GetTimeScheduleQuery());
+    => await _mediatr.Send(new GetUserActivitiesQuery());
 
-    [HttpPost]
-    public async Task<int> Add(AssignActivityCommand command)
+    [HttpPost("[action]")]
+    public async Task<int> Add(AddActivityCommand command)
         => await _mediatr.Send(command);
 
     [HttpPut]

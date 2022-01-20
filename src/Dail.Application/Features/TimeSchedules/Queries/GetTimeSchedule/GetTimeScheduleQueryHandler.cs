@@ -6,13 +6,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dail.Application.Features.TimeSchedules.Queries.GetAllTimeSchedule;
-public class GetAllTimeScheduleQueryHandler : IRequestHandler<GetAllTimeScheduleQuery, IList<TimeScheduleInfoViewModel>>
+public class GetTimeScheduleQueryHandler : IRequestHandler<GetTimeScheduleQuery, TimeScheduleViewModel>
 {
     private readonly IDailContext _context;
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
 
-    public GetAllTimeScheduleQueryHandler(
+    public GetTimeScheduleQueryHandler(
         IDailContext context,
         IMapper mapper,
         ICurrentUserService currentUserService)
@@ -22,10 +22,11 @@ public class GetAllTimeScheduleQueryHandler : IRequestHandler<GetAllTimeSchedule
         _currentUserService = currentUserService;
     }
 
-    public async Task<IList<TimeScheduleInfoViewModel>> Handle(GetAllTimeScheduleQuery request, CancellationToken cancellationToken)
+    public async Task<TimeScheduleViewModel> Handle(GetTimeScheduleQuery request, CancellationToken cancellationToken)
     {
-        var vm = await _context.Activities.Where(c => c.CreatedBy == _currentUserService.UserId)
-                  .AsNoTracking().ProjectTo<TimeScheduleInfoViewModel>(_mapper.ConfigurationProvider).ToListAsync();
+        TimeScheduleViewModel vm = new ();
+
+
         return vm;
     }
 }
