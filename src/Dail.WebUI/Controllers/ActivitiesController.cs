@@ -23,7 +23,7 @@ public class ActivitiesController : ApiController
 
     [HttpGet]
     public async Task<IList<ActivityViewModel>> GetActivities()
-    => await _mediatr.Send(new GetUserActivitiesQuery());
+    => await _mediatr.Send(new GetTimeScheduleQuery());
 
     [HttpPost]
     public async Task<int> Add(AssignActivityCommand command)

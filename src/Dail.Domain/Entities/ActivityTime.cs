@@ -14,4 +14,7 @@ public class ActivityTime : AuditableEntity
     public string StartTime { get; set; }
     [MaxLength(11)]
     public string EndTime { get; set; }
+
+    public int TimeScheduleId { get; set; }
+    public TimeSchedule TimeSchedule { get; set; }
 }
