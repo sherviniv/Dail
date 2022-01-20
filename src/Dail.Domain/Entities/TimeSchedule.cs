@@ -5,6 +5,11 @@ namespace Dail.Domain.Entities;
 
 public class TimeSchedule : AuditableEntity
 {
+    public TimeSchedule()
+    {
+        ActivityTimes = new HashSet<ActivityTime>();
+    }
+
     public int Id { get; set; }
 
     [Required]
@@ -13,4 +18,6 @@ public class TimeSchedule : AuditableEntity
 
     [MaxLength(128)]
     public string Description { get; set; }
+
+    public virtual ICollection<ActivityTime> ActivityTimes { get; set; }
 }

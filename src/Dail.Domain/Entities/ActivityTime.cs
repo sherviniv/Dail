@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations;
 namespace Dail.Domain.Entities;
 public class ActivityTime : AuditableEntity
 {
+    public ActivityTime()
+    {
+        Activities = new HashSet<Activity>();
+    }
+
     public int Id { get; set; }
     public DayOfWeek Day { get; set; }
 
@@ -17,4 +22,6 @@ public class ActivityTime : AuditableEntity
 
     public int TimeScheduleId { get; set; }
     public TimeSchedule TimeSchedule { get; set; }
+
+    public virtual ICollection<Activity> Activities { get; set; }
 }
