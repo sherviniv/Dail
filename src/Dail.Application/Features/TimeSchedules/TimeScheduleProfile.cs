@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dail.Application.Features.TimeSchedules.Commands.AddTimeSchedule;
 using Dail.Application.Features.TimeSchedules.Commands.ModifyTimeSchedule;
+using Dail.Application.Features.TimeSchedules.Models;
 using Dail.Domain.Entities;
 
 namespace Dail.Application.Features.TimeSchedules;
@@ -10,5 +11,6 @@ internal class TimeScheduleProfile : Profile
     {
         CreateMap<TimeSchedule, AddTimeScheduleCommand>().ReverseMap();
         CreateMap<TimeSchedule, ModifyTimeScheduleCommand>().ReverseMap();
+        CreateMap<TimeSchedule, TimeScheduleInfoViewModel>().ReverseMap();
     }
 }

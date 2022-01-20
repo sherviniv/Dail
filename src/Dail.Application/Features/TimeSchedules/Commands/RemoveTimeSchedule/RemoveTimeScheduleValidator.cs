@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.Extensions.Localization;
 using System.Text;
 
-namespace Dail.Application.Features.Activities.Commands.RemoveActivity;
+namespace Dail.Application.Features.TimeSchedules.Commands.RemoveTimeSchedule;
 public class RemoveTimeScheduleValidator : AbstractValidator<RemoveTimeScheduleCommand>
 {
     public RemoveTimeScheduleValidator(IStringLocalizer<MessagesLocalizer> localizer)

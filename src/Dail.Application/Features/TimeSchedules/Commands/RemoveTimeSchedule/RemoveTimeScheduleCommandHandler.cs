@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
-namespace Dail.Application.Features.Activities.Commands.RemoveActivity;
+namespace Dail.Application.Features.TimeSchedules.Commands.RemoveTimeSchedule;
 public class RemoveTimeScheduleCommandHandler : IRequestHandler<RemoveTimeScheduleCommand, Unit>
 {
     private readonly IDailContext _context;
@@ -27,7 +27,7 @@ public class RemoveTimeScheduleCommandHandler : IRequestHandler<RemoveTimeSchedu
     public async Task<Unit> Handle(RemoveTimeScheduleCommand request, CancellationToken cancellationToken)
     {
         var model = await _context.TimeSchedules
-            .FirstOrDefaultAsync(c=> c.Id == request.Id && c.CreatedBy == _currentUserService.UserId);
+            .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedBy == _currentUserService.UserId);
 
         if (model == null)
         {

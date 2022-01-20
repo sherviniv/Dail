@@ -1,7 +1,7 @@
 ﻿using Dail.Application.Features.ActivityTimes.Models;
 
 namespace Dail.Application.Features.TimeSchedules.Models;
-public class TimeScheduleViewModel2
+public class TimeScheduleViewModel
 {
     public string Title { get; set; }
     public string MyProperty { get; set; }
