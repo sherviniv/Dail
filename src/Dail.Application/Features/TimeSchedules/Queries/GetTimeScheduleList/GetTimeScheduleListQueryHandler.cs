@@ -5,7 +5,7 @@ using Dail.Application.Features.TimeSchedules.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dail.Application.Features.TimeSchedules.Queries.GetAllTimeSchedule;
+namespace Dail.Application.Features.TimeSchedules.Queries.GetTimeScheduleList;
 public class GetTimeScheduleListQueryHandler : IRequestHandler<GetTimeScheduleListQuery, IList<TimeScheduleInfoViewModel>>
 {
     private readonly IDailContext _context;
