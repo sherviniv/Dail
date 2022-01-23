@@ -17,7 +17,617 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 @Injectable({
     providedIn: 'root'
 })
-export class AuthenticationService {
+export class ApiClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    activitiesGet(): Observable<ActivityViewModel[]> {
+        let url_ = this.baseUrl + "/api/Activities";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivitiesGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivitiesGet(<any>response_);
+                } catch (e) {
+                    return <Observable<ActivityViewModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ActivityViewModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processActivitiesGet(response: HttpResponseBase): Observable<ActivityViewModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ActivityViewModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ActivityViewModel[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    activitiesPut(body: ModifyActivityTimeCommand | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/Activities";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivitiesPut(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivitiesPut(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processActivitiesPut(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    activitiesDelete(body: RemoveActivityTimeCommand | undefined): Observable<Unit> {
+        let url_ = this.baseUrl + "/api/Activities";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivitiesDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivitiesDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<Unit>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Unit>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processActivitiesDelete(response: HttpResponseBase): Observable<Unit> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Unit.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Unit>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    activityTimesPut(body: ModifyActivityTimeCommand | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/ActivityTimes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivityTimesPut(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivityTimesPut(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processActivityTimesPut(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    activityTimesDelete(body: RemoveActivityTimeCommand | undefined): Observable<Unit> {
+        let url_ = this.baseUrl + "/api/ActivityTimes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processActivityTimesDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processActivityTimesDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<Unit>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Unit>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processActivityTimesDelete(response: HttpResponseBase): Observable<Unit> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Unit.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Unit>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    timeSchedulesPost(body: AddTimeScheduleCommand | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/TimeSchedules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTimeSchedulesPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTimeSchedulesPost(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processTimeSchedulesPost(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    timeSchedulesPut(body: ModifyTimeScheduleCommand | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/TimeSchedules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTimeSchedulesPut(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTimeSchedulesPut(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processTimeSchedulesPut(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    timeSchedulesDelete(body: RemoveTimeScheduleCommand | undefined): Observable<Unit> {
+        let url_ = this.baseUrl + "/api/TimeSchedules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTimeSchedulesDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTimeSchedulesDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<Unit>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Unit>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processTimeSchedulesDelete(response: HttpResponseBase): Observable<Unit> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Unit.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Unit>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ActivitiesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    add(body: AddActivityCommand | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/Activities/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAdd(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ActivityTimesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    add(body: AddActivityTimeCommand | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/ActivityTimes/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAdd(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthenticationClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -88,7 +698,7 @@ export class AuthenticationService {
 @Injectable({
     providedIn: 'root'
 })
-export class Service {
+export class TimeSchedulesClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -99,10 +709,66 @@ export class Service {
     }
 
     /**
+     * @param body (optional) 
      * @return Success
      */
-    weatherForecast(): Observable<WeatherForecast[]> {
-        let url_ = this.baseUrl + "/WeatherForecast";
+    getTimeSchedule(body: GetTimeScheduleQuery | undefined): Observable<TimeScheduleViewModel> {
+        let url_ = this.baseUrl + "/api/TimeSchedules/GetTimeSchedule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTimeSchedule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTimeSchedule(<any>response_);
+                } catch (e) {
+                    return <Observable<TimeScheduleViewModel>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TimeScheduleViewModel>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTimeSchedule(response: HttpResponseBase): Observable<TimeScheduleViewModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TimeScheduleViewModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TimeScheduleViewModel>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getTimeScheduleList(): Observable<TimeScheduleInfoViewModel[]> {
+        let url_ = this.baseUrl + "/api/TimeSchedules/GetTimeScheduleList";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -114,20 +780,20 @@ export class Service {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processWeatherForecast(response_);
+            return this.processGetTimeScheduleList(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processWeatherForecast(<any>response_);
+                    return this.processGetTimeScheduleList(<any>response_);
                 } catch (e) {
-                    return <Observable<WeatherForecast[]>><any>_observableThrow(e);
+                    return <Observable<TimeScheduleInfoViewModel[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<WeatherForecast[]>><any>_observableThrow(response_);
+                return <Observable<TimeScheduleInfoViewModel[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processWeatherForecast(response: HttpResponseBase): Observable<WeatherForecast[]> {
+    protected processGetTimeScheduleList(response: HttpResponseBase): Observable<TimeScheduleInfoViewModel[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -141,7 +807,7 @@ export class Service {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(WeatherForecast.fromJS(item));
+                    result200!.push(TimeScheduleInfoViewModel.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -153,8 +819,310 @@ export class Service {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<WeatherForecast[]>(<any>null);
+        return _observableOf<TimeScheduleInfoViewModel[]>(<any>null);
     }
+}
+
+export class ActivityTimeViewModel implements IActivityTimeViewModel {
+    id!: number;
+    day!: DayOfWeek;
+    title!: string | undefined;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    activities!: ActivityViewModel[] | undefined;
+
+    constructor(data?: IActivityTimeViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.day = _data["day"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            if (Array.isArray(_data["activities"])) {
+                this.activities = [] as any;
+                for (let item of _data["activities"])
+                    this.activities!.push(ActivityViewModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ActivityTimeViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActivityTimeViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["day"] = this.day;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        if (Array.isArray(this.activities)) {
+            data["activities"] = [];
+            for (let item of this.activities)
+                data["activities"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IActivityTimeViewModel {
+    id: number;
+    day: DayOfWeek;
+    title: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    activities: ActivityViewModel[] | undefined;
+}
+
+export class ActivityViewModel implements IActivityViewModel {
+    id!: number;
+    title!: string | undefined;
+    description!: string | undefined;
+    color!: string | undefined;
+    day!: DayOfWeek;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+
+    constructor(data?: IActivityViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.color = _data["color"];
+            this.day = _data["day"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+        }
+    }
+
+    static fromJS(data: any): ActivityViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActivityViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["color"] = this.color;
+        data["day"] = this.day;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        return data;
+    }
+}
+
+export interface IActivityViewModel {
+    id: number;
+    title: string | undefined;
+    description: string | undefined;
+    color: string | undefined;
+    day: DayOfWeek;
+    startTime: string | undefined;
+    endTime: string | undefined;
+}
+
+export class AddActivityCommand implements IAddActivityCommand {
+    title!: string | undefined;
+    description!: string | undefined;
+    color!: string | undefined;
+
+    constructor(data?: IAddActivityCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.color = _data["color"];
+        }
+    }
+
+    static fromJS(data: any): AddActivityCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddActivityCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["color"] = this.color;
+        return data;
+    }
+}
+
+export interface IAddActivityCommand {
+    title: string | undefined;
+    description: string | undefined;
+    color: string | undefined;
+}
+
+export class AddActivityTimeCommand implements IAddActivityTimeCommand {
+    day!: DayOfWeek;
+    title!: string | undefined;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+
+    constructor(data?: IAddActivityTimeCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.day = _data["day"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+        }
+    }
+
+    static fromJS(data: any): AddActivityTimeCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddActivityTimeCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["day"] = this.day;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        return data;
+    }
+}
+
+export interface IAddActivityTimeCommand {
+    day: DayOfWeek;
+    title: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+}
+
+export class AddTimeScheduleCommand implements IAddTimeScheduleCommand {
+    title!: string | undefined;
+    description!: string | undefined;
+
+    constructor(data?: IAddTimeScheduleCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): AddTimeScheduleCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddTimeScheduleCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface IAddTimeScheduleCommand {
+    title: string | undefined;
+    description: string | undefined;
+}
+
+export enum DayOfWeek {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
+}
+
+export class GetTimeScheduleQuery implements IGetTimeScheduleQuery {
+    id!: number;
+
+    constructor(data?: IGetTimeScheduleQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): GetTimeScheduleQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTimeScheduleQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IGetTimeScheduleQuery {
+    id: number;
 }
 
 export class LoginDTO implements ILoginDTO {
@@ -197,13 +1165,14 @@ export interface ILoginDTO {
     password: string | undefined;
 }
 
-export class WeatherForecast implements IWeatherForecast {
-    date!: Date;
-    temperatureC!: number;
-    readonly temperatureF!: number;
-    summary!: string | undefined;
+export class ModifyActivityTimeCommand implements IModifyActivityTimeCommand {
+    id!: number;
+    day!: DayOfWeek;
+    title!: string | undefined;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
 
-    constructor(data?: IWeatherForecast) {
+    constructor(data?: IModifyActivityTimeCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -214,35 +1183,296 @@ export class WeatherForecast implements IWeatherForecast {
 
     init(_data?: any) {
         if (_data) {
-            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
-            this.temperatureC = _data["temperatureC"];
-            (<any>this).temperatureF = _data["temperatureF"];
-            this.summary = _data["summary"];
+            this.id = _data["id"];
+            this.day = _data["day"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
         }
     }
 
-    static fromJS(data: any): WeatherForecast {
+    static fromJS(data: any): ModifyActivityTimeCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new WeatherForecast();
+        let result = new ModifyActivityTimeCommand();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
-        data["temperatureC"] = this.temperatureC;
-        data["temperatureF"] = this.temperatureF;
-        data["summary"] = this.summary;
+        data["id"] = this.id;
+        data["day"] = this.day;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
         return data;
     }
 }
 
-export interface IWeatherForecast {
-    date: Date;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string | undefined;
+export interface IModifyActivityTimeCommand {
+    id: number;
+    day: DayOfWeek;
+    title: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+}
+
+export class ModifyTimeScheduleCommand implements IModifyTimeScheduleCommand {
+    id!: number;
+    title!: string | undefined;
+    description!: string | undefined;
+
+    constructor(data?: IModifyTimeScheduleCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): ModifyTimeScheduleCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModifyTimeScheduleCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface IModifyTimeScheduleCommand {
+    id: number;
+    title: string | undefined;
+    description: string | undefined;
+}
+
+export class RemoveActivityTimeCommand implements IRemoveActivityTimeCommand {
+    id!: number;
+
+    constructor(data?: IRemoveActivityTimeCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemoveActivityTimeCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveActivityTimeCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IRemoveActivityTimeCommand {
+    id: number;
+}
+
+export class RemoveTimeScheduleCommand implements IRemoveTimeScheduleCommand {
+    id!: number;
+
+    constructor(data?: IRemoveTimeScheduleCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemoveTimeScheduleCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveTimeScheduleCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IRemoveTimeScheduleCommand {
+    id: number;
+}
+
+export class TimeScheduleInfoViewModel implements ITimeScheduleInfoViewModel {
+    id!: number;
+    title!: string | undefined;
+    description!: string | undefined;
+
+    constructor(data?: ITimeScheduleInfoViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): TimeScheduleInfoViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeScheduleInfoViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface ITimeScheduleInfoViewModel {
+    id: number;
+    title: string | undefined;
+    description: string | undefined;
+}
+
+export class TimeScheduleViewModel implements ITimeScheduleViewModel {
+    id!: number;
+    title!: string | undefined;
+    description!: string | undefined;
+    activityTimes!: ActivityTimeViewModel[] | undefined;
+    unAssignedActivities!: ActivityViewModel[] | undefined;
+
+    constructor(data?: ITimeScheduleViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+            if (Array.isArray(_data["activityTimes"])) {
+                this.activityTimes = [] as any;
+                for (let item of _data["activityTimes"])
+                    this.activityTimes!.push(ActivityTimeViewModel.fromJS(item));
+            }
+            if (Array.isArray(_data["unAssignedActivities"])) {
+                this.unAssignedActivities = [] as any;
+                for (let item of _data["unAssignedActivities"])
+                    this.unAssignedActivities!.push(ActivityViewModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TimeScheduleViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeScheduleViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        if (Array.isArray(this.activityTimes)) {
+            data["activityTimes"] = [];
+            for (let item of this.activityTimes)
+                data["activityTimes"].push(item.toJSON());
+        }
+        if (Array.isArray(this.unAssignedActivities)) {
+            data["unAssignedActivities"] = [];
+            for (let item of this.unAssignedActivities)
+                data["unAssignedActivities"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface ITimeScheduleViewModel {
+    id: number;
+    title: string | undefined;
+    description: string | undefined;
+    activityTimes: ActivityTimeViewModel[] | undefined;
+    unAssignedActivities: ActivityViewModel[] | undefined;
+}
+
+export class Unit implements IUnit {
+
+    constructor(data?: IUnit) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): Unit {
+        data = typeof data === 'object' ? data : {};
+        let result = new Unit();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data;
+    }
+}
+
+export interface IUnit {
 }
 
 export class ApiException extends Error {
