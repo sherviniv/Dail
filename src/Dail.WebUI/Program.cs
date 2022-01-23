@@ -56,7 +56,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 // localization
-var cultures = new List<CultureInfo> { new("en"), new("fa") };
+var cultures = new List<CultureInfo> { new("fa") /*, new("en")*/ };
 app.UseRequestLocalization(options =>
 {
     options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("fa");
@@ -76,6 +76,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

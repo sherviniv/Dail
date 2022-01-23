@@ -44,7 +44,17 @@
 *{
     text-align: right;
     font-family: "Vazir" ;
+    direction: rtl;
+}
 
+.bg-gradient-primary{
+  height:100vh;
+}
+
+.invalid-input {
+  color:red;
+  padding-left:6px;
+  font-size:12px;
 }
 
 .sidebar{

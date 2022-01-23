@@ -26,6 +26,8 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
+    "ngx-spinner": "^13.0.0",
+    "ngx-toastr": "^14.2.1",
     "oidc-client": "^1.11.5",
     "popper.js": "^1.16.0",
     "run-script-os": "^1.1.6",
@@ -34,7 +36,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.1.2",
+    "@angular-devkit/build-angular": "^13.1.4",
     "@angular/cli": "~13.1.2",
     "@angular/compiler-cli": "~13.1.1",
     "@types/jasmine": "~3.6.0",
@@ -47,8 +49,8 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "typescript": "~4.5.4",
-    "nswag": "^13.4.2"
+    "nswag": "^13.4.2",
+    "typescript": "~4.5.4"
   },
   "optionalDependencies": {}
 }
