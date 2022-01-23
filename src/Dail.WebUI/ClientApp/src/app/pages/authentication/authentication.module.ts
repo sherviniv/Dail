@@ -4,6 +4,7 @@ import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
     RegisterComponent
   ],
   imports: [
+    CoreModule,
     CommonModule,
     FormsModule,
     AuthenticationRoutingModule

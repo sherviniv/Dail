@@ -4,8 +4,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ScrollTopComponent } from './components/scroll-top/scroll-top.component';
 
-
-
 @NgModule({
   declarations: [
     SidebarComponent,
