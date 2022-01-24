@@ -30,7 +30,6 @@ export class RegisterComponent implements OnInit {
       return;
 
     this.spinner.show("main");
-    debugger
     await this.client.register(this.model).toPromise().then(
       response => {
         this.toastr.success(`${this.model.firstName} عزیز ثبت نام شما با موفقیت انجام شد! لطفا وارد برنامه شوید`);
@@ -38,8 +37,6 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['authentication/login']);
       },
       error => {
-        console.log(error);
-        
         this.toastr.error("خطا هنگام ساخت کاربر");
       }
     );

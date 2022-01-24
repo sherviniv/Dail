@@ -110,7 +110,7 @@ internal class IdentityService : IIdentityService
 
     public async Task<ServerResult<string>> LoginUserAsync(LoginDTO model)
     {
-        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == model.Username || u.Email == model.Username);
+        var user = await _userManager.FindByNameAsync(model.Username);
 
         if (user == null)
             throw new DailException(MessageCodes.InvalidCredentials,
