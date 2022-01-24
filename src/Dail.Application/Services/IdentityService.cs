@@ -6,6 +6,7 @@ using Dail.Application.Common.Interfaces;
 using Dail.Application.Common.Localization;
 using Dail.Application.Common.Models.DataTransferObjects;
 using Dail.Application.Common.Models.ViewModels;
+using Dail.Domain.Constants;
 using Dail.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,8 @@ internal class IdentityService : IIdentityService
 
         if (!result.Succeeded)
             throw new ValidationException(result.Errors);
+
+        await _userManager.AddToRoleAsync(user, SystemRoles.DailUser);
 
         return new(user.Id);
     }
@@ -107,7 +110,7 @@ internal class IdentityService : IIdentityService
 
     public async Task<ServerResult<string>> LoginUserAsync(LoginDTO model)
     {
-        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == model.Username);
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == model.Username || u.Email == model.Username);
 
         if (user == null)
             throw new DailException(MessageCodes.InvalidCredentials,

@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private spinner: NgxSpinnerService) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue.token) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/panel']);
     }
   }
 
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
     this.spinner.show("main");
     await this.authenticationService.login(this.model).then(response => {
-      this.toastr.error("خوش آمدید")
+      this.toastr.success("خوش آمدید")
     }, (error) => this.toastr.error("خطا در ورود به برنامه"));
     this.spinner.hide("main");
   }
