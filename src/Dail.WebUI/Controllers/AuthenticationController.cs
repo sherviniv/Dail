@@ -17,8 +17,15 @@ public class AuthenticationController : ApiController
 
     [AllowAnonymous]
     [HttpPost("[action]")]
-    public async Task<string> Login(LoginDTO dtoModel)
+    public async Task<ServerResult<string>> Login(LoginDTO model)
     {
-        return await _identityService.LoginUserAsync(dtoModel);
+        return await _identityService.LoginUserAsync(model);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("[action]")]
+    public async Task<ServerResult<string>> Register(UserDTO model)
+    {
+        return await _identityService.CreateUserAsync(model);
     }
 }

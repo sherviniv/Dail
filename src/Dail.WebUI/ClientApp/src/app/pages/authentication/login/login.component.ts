@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     this.spinner.show("main");
     await this.authenticationService.login(this.model).then(response => {
       this.toastr.error("خوش آمدید")
-    }, () => this.toastr.error("خطا در ورود به برنامه"));
+    }, (error) => this.toastr.error("خطا در ورود به برنامه"));
     this.spinner.hide("main");
   }
 

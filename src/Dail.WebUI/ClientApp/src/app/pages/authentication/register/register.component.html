@@ -1,1 +1,93 @@
-<p>register works!</p>
+<div class="bg-gradient-primary">
+    <div class="container">
+        <div class="row">&nbsp;</div>
+        <div class="card o-hidden border-0 shadow-lg">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">ساخت حساب کاربری جدید</h1>
+                            </div>
+                            <form class="user" #eform="ngForm" (ngSubmit)="registerFormSubmit(eform)" novalidate>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user"
+                                            [(ngModel)]="model.firstName" id="firstName" name="firstName"
+                                            #firstName="ngModel" required placeholder="نام">
+                                        <div *ngIf="!firstName.valid  && (firstName.touched || eform.submitted)"
+                                            class="invalid-input">
+                                            <div [hidden]="!firstName.errors?.required">
+                                                نام را وارد کنید
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control form-control-user"
+                                            [(ngModel)]="model.lastName" id="lastName" name="lastName"
+                                            #lastName="ngModel" required placeholder="نام خانوادگی">
+                                        <div *ngIf="!lastName.valid  && (lastName.touched || eform.submitted)"
+                                            class="invalid-input">
+                                            <div [hidden]="!lastName.errors?.required">
+                                                نام خانوادگی را وارد کنید
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-user" [(ngModel)]="model.email"
+                                        id="email" name="email" #email="ngModel" email required placeholder="ایمیل">
+                                    <div *ngIf="!email.valid  && (email.touched || eform.submitted)"
+                                        class="invalid-input">
+                                        <div [hidden]="!email.errors?.required">
+                                            ایمیل را وارد کنید
+                                        </div>
+                                        <p [hidden]="!email.errors?.email">
+                                            فرمت ورودی ایمیل صحیح نیست
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user"
+                                            [(ngModel)]="model.password" id="password" name="password"
+                                            #password="ngModel" required placeholder="رمز عبور">
+                                        <div *ngIf="!password.valid  && (password.touched || eform.submitted)"
+                                            class="invalid-input">
+                                            <div [hidden]="!password.errors?.required">
+                                                رمز عبور را وارد کنید
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user" id="cpassword"
+                                            name="cpassword" ngModel #cpassword="ngModel" placeholder="تکرار رمز عبور">
+                                        <div *ngIf="(cpassword.touched || eform.submitted && password.value)"
+                                            class="invalid-input">
+                                            <div [hidden]="cpassword.value == password.value">
+                                                تکرار رمز عبور یکسان نیست
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    ساخت حساب کاربری
+                                </button>
+                                <hr>
+                                <a href="index.html" class="btn btn-google btn-user btn-block">
+                                    <i class="fab fa-google fa-fw"></i> ثبت نام از طریق گوگل
+                                </a>
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" [routerLink]="['../login']">حساب کاربری دارید؟ وارد شوید</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

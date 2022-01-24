@@ -641,7 +641,7 @@ export class AuthenticationClient {
      * @param body (optional) 
      * @return Success
      */
-    login(body: LoginDTO | undefined): Observable<string> {
+    login(body: LoginDTO | undefined): Observable<StringServerResult> {
         let url_ = this.baseUrl + "/api/Authentication/Login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -664,14 +664,14 @@ export class AuthenticationClient {
                 try {
                     return this.processLogin(<any>response_);
                 } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
+                    return <Observable<StringServerResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<string>><any>_observableThrow(response_);
+                return <Observable<StringServerResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processLogin(response: HttpResponseBase): Observable<string> {
+    protected processLogin(response: HttpResponseBase): Observable<StringServerResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -682,8 +682,7 @@ export class AuthenticationClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = StringServerResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -691,7 +690,63 @@ export class AuthenticationClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(<any>null);
+        return _observableOf<StringServerResult>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    register(body: UserDTO | undefined): Observable<StringServerResult> {
+        let url_ = this.baseUrl + "/api/Authentication/Register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegister(<any>response_);
+                } catch (e) {
+                    return <Observable<StringServerResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StringServerResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRegister(response: HttpResponseBase): Observable<StringServerResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StringServerResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StringServerResult>(<any>null);
     }
 }
 
@@ -1333,6 +1388,42 @@ export interface IRemoveTimeScheduleCommand {
     id: number;
 }
 
+export class StringServerResult implements IStringServerResult {
+    data!: string | undefined;
+
+    constructor(data?: IStringServerResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"];
+        }
+    }
+
+    static fromJS(data: any): StringServerResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new StringServerResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data;
+        return data;
+    }
+}
+
+export interface IStringServerResult {
+    data: string | undefined;
+}
+
 export class TimeScheduleInfoViewModel implements ITimeScheduleInfoViewModel {
     id!: number;
     title!: string | undefined;
@@ -1473,6 +1564,58 @@ export class Unit implements IUnit {
 }
 
 export interface IUnit {
+}
+
+export class UserDTO implements IUserDTO {
+    id!: string | undefined;
+    email!: string | undefined;
+    firstName!: string | undefined;
+    lastName!: string | undefined;
+    password!: string | undefined;
+
+    constructor(data?: IUserDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.email = _data["email"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): UserDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["email"] = this.email;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["password"] = this.password;
+        return data;
+    }
+}
+
+export interface IUserDTO {
+    id: string | undefined;
+    email: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    password: string | undefined;
 }
 
 export class ApiException extends Error {

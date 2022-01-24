@@ -135,4 +135,7 @@
   <data name="NotFound" xml:space="preserve">
     <value>اطلاعات مورد نظر پیدا نشد</value>
   </data>
+  <data name="UsernameIsExist" xml:space="preserve">
+    <value>نام کاربری تکراری است،نام دیگری انتخاب کنید</value>
+  </data>
 </root>

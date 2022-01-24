@@ -31,12 +31,22 @@ internal class IdentityService : IIdentityService
         _localizer = localizer;
     }
 
-    public async Task<string> CreateUserAsync(UserDTO model)
+    public async Task<ServerResult<string>> CreateUserAsync(UserDTO model)
     {
+        var userExists = await _userManager.Users.AnyAsync(c => c.Email == model.Email.ToLower());
+
+        if (userExists)
+        {
+            throw new DailException(MessageCodes.UsernameIsExist,
+                   _localizer.GetString(MessageCodes.UsernameIsExist)?.Value ?? "", System.Net.HttpStatusCode.BadRequest);
+        }
+
         var user = new ApplicationUser
         {
-            UserName = model.UserName,
-            Email = model.Email
+            UserName = model.Email,
+            Email = model.Email,
+            FirstName = model.FirstName ?? "",
+            LastName = model.LastName ?? ""
         };
 
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -44,10 +54,10 @@ internal class IdentityService : IIdentityService
         if (!result.Succeeded)
             throw new ValidationException(result.Errors);
 
-        return user.Id;
+        return new(user.Id);
     }
 
-    public async Task<string> DeleteUserAsync(string userId)
+    public async Task<ServerResult<string>> DeleteUserAsync(string userId)
     {
         var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
 
@@ -56,7 +66,7 @@ internal class IdentityService : IIdentityService
             await DeleteUserAsync(user);
         }
 
-        return userId;
+        return new(userId);
     }
 
     public async Task<bool> DeleteUserAsync(ApplicationUser user)
@@ -95,7 +105,7 @@ internal class IdentityService : IIdentityService
         return users;
     }
 
-    public async Task<string> LoginUserAsync(LoginDTO model)
+    public async Task<ServerResult<string>> LoginUserAsync(LoginDTO model)
     {
         var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == model.Username);
 
@@ -112,12 +122,12 @@ internal class IdentityService : IIdentityService
         var roles = await _userManager.GetRolesAsync(user);
 
         var token = _jwtHandler.GenerateToken(user, roles.ToList());
-        return token;
+        return new(token);
     }
 
-    public async Task<string> UpdateUserAsync(UserDTO model)
+    public async Task<ServerResult<string>> UpdateUserAsync(UserDTO model)
     {
-        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == model.UserName);
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == model.Email);
 
         if (user == null)
             throw new DailException(MessageCodes.NotFound,
@@ -130,6 +140,6 @@ internal class IdentityService : IIdentityService
         if (!result.Succeeded)
             throw new ValidationException(result.Errors);
 
-        return user.Id;
+        return new(user.Id);
     }
 }

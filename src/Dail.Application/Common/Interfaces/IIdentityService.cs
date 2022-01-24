@@ -8,8 +8,8 @@ public interface IIdentityService
     Task<string> GetUserNameAsync(string userId);
     Task<UserDTO> GetUserAsync(string userId);
     Task<List<UserVM>> GetUsersAsync();
-    Task<string> CreateUserAsync(UserDTO model);
-    Task<string> UpdateUserAsync(UserDTO model);
-    Task<string> DeleteUserAsync(string userId);
-    Task<string> LoginUserAsync(LoginDTO model);
+    Task<ServerResult<string>> CreateUserAsync(UserDTO model);
+    Task<ServerResult<string>> UpdateUserAsync(UserDTO model);
+    Task<ServerResult<string>> DeleteUserAsync(string userId);
+    Task<ServerResult<string>> LoginUserAsync(LoginDTO model);
 }

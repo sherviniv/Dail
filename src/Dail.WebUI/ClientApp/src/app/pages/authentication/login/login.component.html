@@ -15,7 +15,7 @@
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" [(ngModel)]="model.username"
                         id="username" name="username" #username="ngModel" required aria-describedby="emailHelp"
-                        placeholder="نام کاریری را وارد کنید...">
+                        placeholder="ایمیل خود را وارد کنید...">
                       <span class="invalid-input"
                         *ngIf="(username.touched || loginForm.submitted)  && username.invalid">نام کاربری اجباری
                         است</span>
@@ -36,7 +36,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="register.html">ساخت حساب کاربری</a>
+                    <a class="small" [routerLink]="['../register']" href="register.html">ساخت حساب کاربری</a>
                   </div>
                 </div>
               </div>
