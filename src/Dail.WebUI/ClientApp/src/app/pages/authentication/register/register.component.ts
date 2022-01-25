@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationClient, UserDTO } from 'src/app/core/services/dail.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -13,13 +14,17 @@ import { AuthenticationClient, UserDTO } from 'src/app/core/services/dail.servic
 export class RegisterComponent implements OnInit {
   model: UserDTO = {} as any;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
     private router: Router,
     private toastr: ToastrService,
     private client: AuthenticationClient,
+    private authenticationService: AuthenticationService,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    if (this.authenticationService.currentUserValue.token) {
+      this.router.navigate(['/panel']);
+    }
   }
 
   async registerFormSubmit(f: NgForm) {

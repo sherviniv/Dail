@@ -68,3 +68,23 @@
 .sidebar.toggled .nav-item .nav-link span {
     text-align: center;
 }
+
+//Dail styles
+.bg-not-found {
+  background: url(./assets/images/not_found_undraw.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.bg-register-image {
+  background: url(./assets/images/undraw_conference.png);
+  background-position: center;
+  background-size: cover;
+}
+
+
+.bg-login-image {
+  background: url(./assets/images/undraw_Events.png);
+  background-position: center;
+  background-size: cover;
+}
