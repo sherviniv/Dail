@@ -753,6 +753,71 @@ export class AuthenticationClient {
 @Injectable({
     providedIn: 'root'
 })
+export class ReportsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getUserDashboard(): Observable<UserDashboardViewModel> {
+        let url_ = this.baseUrl + "/api/Reports/GetUserDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserDashboard(<any>response_);
+                } catch (e) {
+                    return <Observable<UserDashboardViewModel>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserDashboardViewModel>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserDashboard(response: HttpResponseBase): Observable<UserDashboardViewModel> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserDashboardViewModel.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserDashboardViewModel>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
 export class TimeSchedulesClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -1564,6 +1629,66 @@ export class Unit implements IUnit {
 }
 
 export interface IUnit {
+}
+
+export class UserDashboardViewModel implements IUserDashboardViewModel {
+    totalTimeSchedules!: number;
+    totalActivities!: number;
+    assignedWorksCount!: number;
+    unAssignedWorksCount!: number;
+    recentWorks!: string[] | undefined;
+
+    constructor(data?: IUserDashboardViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalTimeSchedules = _data["totalTimeSchedules"];
+            this.totalActivities = _data["totalActivities"];
+            this.assignedWorksCount = _data["assignedWorksCount"];
+            this.unAssignedWorksCount = _data["unAssignedWorksCount"];
+            if (Array.isArray(_data["recentWorks"])) {
+                this.recentWorks = [] as any;
+                for (let item of _data["recentWorks"])
+                    this.recentWorks!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): UserDashboardViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDashboardViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalTimeSchedules"] = this.totalTimeSchedules;
+        data["totalActivities"] = this.totalActivities;
+        data["assignedWorksCount"] = this.assignedWorksCount;
+        data["unAssignedWorksCount"] = this.unAssignedWorksCount;
+        if (Array.isArray(this.recentWorks)) {
+            data["recentWorks"] = [];
+            for (let item of this.recentWorks)
+                data["recentWorks"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IUserDashboardViewModel {
+    totalTimeSchedules: number;
+    totalActivities: number;
+    assignedWorksCount: number;
+    unAssignedWorksCount: number;
+    recentWorks: string[] | undefined;
 }
 
 export class UserDTO implements IUserDTO {

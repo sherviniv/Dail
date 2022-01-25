@@ -10,6 +10,7 @@ import { ConfirmDialogService } from '../confirm-dialog/confirm-dialog.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  displayName : string = '';
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit {
     private confirm: ConfirmDialogService) { }
 
   ngOnInit(): void {
+    this.displayName = this.authenticationService.currentUserValue.displayName;
   }
 
   async logout() {
@@ -25,7 +27,7 @@ export class NavbarComponent implements OnInit {
     , "برای خروج بر بروی خروج کلیک کنید", "خروج", "لغو", "md");
     if (isConfirmed) {
       this.authenticationService.logout();
-      this.toastr.info("از سامانه خارج شدید");
+      this.toastr.info("از برنامه خارج شدید");
       this.router.navigate(['authentication/login']);
     }
   }

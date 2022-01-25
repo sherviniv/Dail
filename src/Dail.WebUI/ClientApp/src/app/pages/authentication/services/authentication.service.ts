@@ -21,8 +21,10 @@ export class AuthenticationService {
 
   async login(model: LoginDTO) {
     const token = await this.client.login(model).toPromise();
-    const user = this.decodeJWT(token.data!);
-    user.token = token;
+    const user : any = this.decodeJWT(token.data!);
+    user.username = user.unique_name;
+    user.token = token.data;
+    user.displayName = user.username;
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('dailcurrentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);

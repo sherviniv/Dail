@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/panel';
   }
 
   async loginFormSubmit(form: NgForm) {
@@ -37,11 +37,11 @@ export class LoginComponent implements OnInit {
     if (!form.valid) {
       return;
     }
-
     this.spinner.show("main");
     await this.authenticationService.login(this.model).then(response => {
       this.toastr.success("ورود شما با موفقیت انجام شد");
-      this.router.navigate(['/panel']);
+      this.router.navigate([this.returnUrl]);
+      window.location.reload();
     }, (error) => this.toastr.error("خطا در ورود به برنامه"));
     this.spinner.hide("main");
   }
