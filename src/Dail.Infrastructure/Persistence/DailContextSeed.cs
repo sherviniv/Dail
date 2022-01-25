@@ -9,7 +9,13 @@ public static class DailContextSeed
 {
     public static async Task SeedDefaultUserAsync(UserManager<ApplicationUser> userManager)
     {
-        var defaultUser = new ApplicationUser { UserName = "admin", Email = "admin@dail.com" };
+        var defaultUser = new ApplicationUser 
+        {
+            UserName = "admin",
+            Email = "admin@dail.com",
+            FirstName = "admin",
+            LastName = "admin",
+        };
 
         if (userManager.Users.All(u => u.UserName != defaultUser.UserName))
         {
@@ -17,7 +23,13 @@ public static class DailContextSeed
             await userManager.AddToRoleAsync(defaultUser, SystemRoles.Admin);
         }
 
-        var defaultDailUser = new ApplicationUser { UserName = "dail", Email = "dail@dail.com" };
+        var defaultDailUser = new ApplicationUser
+        { 
+            UserName = "dail",
+            Email = "dail@dail.com",
+            FirstName = "james",
+            LastName = "test",
+        };
 
         if (userManager.Users.All(u => u.UserName != defaultDailUser.UserName))
         {

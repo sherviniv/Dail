@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+  <!-- <button class="close" type="button" data-dismiss="modal" (click)="decline()">
+    <span aria-hidden="true">×</span>
+  </button> -->
+</div>
+<div class="modal-body"> {{ message }}</div>
+<div class="modal-footer">
+  <button class="btn btn-secondary" type="button" (click)="decline()">{{ btnCancelText }}</button>
+  <button class="btn btn-primary" (click)="accept()">{{ btnOkText }}</button>
+</div>
