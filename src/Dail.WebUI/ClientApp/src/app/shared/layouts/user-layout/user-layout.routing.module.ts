@@ -15,6 +15,10 @@ const routes: Routes = [
         path: 'time-schedules',
         loadChildren: () => import('src/app/pages/time-schedules/time-schedules.module').then(mod => mod.TimeSchedulesModule)
       },
+      {
+        path: 'activity-times',
+        loadChildren: () => import('src/app/pages/activity-times/activity-times.module').then(mod => mod.ActivityTimesModule)
+      },
     ]
   },
 ];
