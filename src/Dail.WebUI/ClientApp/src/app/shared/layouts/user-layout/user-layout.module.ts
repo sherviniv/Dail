@@ -5,11 +5,13 @@ import { UserLayoutComponent } from './user-layout.component';
 import { UserDashboardComponent } from 'src/app/pages/user-dashboard/user-dashboard.component';
 import { SharedModule } from '../../shared.module';
 import { UserLayoutRoutingModule } from './user-layout.routing.module';
+import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 
 @NgModule({
   declarations: [
     UserLayoutComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,

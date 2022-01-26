@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ProfileComponent } from 'src/app/pages/profile/profile.component';
 import { UserDashboardComponent } from 'src/app/pages/user-dashboard/user-dashboard.component';
 import { UserLayoutComponent } from './user-layout.component';
 
@@ -9,6 +10,7 @@ const routes: Routes = [
     component: UserLayoutComponent,
     children: [
       { path: "", component: UserDashboardComponent },
+      { path: "profile", component: ProfileComponent },
     ]
   }
 ];

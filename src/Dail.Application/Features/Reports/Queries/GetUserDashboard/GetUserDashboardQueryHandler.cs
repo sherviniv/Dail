@@ -27,7 +27,7 @@ public class GetUserDashboardQueryHandler : IRequestHandler<GetUserDashboardQuer
         vm.TotalActivities = activities.Count;
         vm.AssignedWorksCount = activities.Count(c=> c.ActivityTimeId != null);
         vm.UnAssignedWorksCount = activities.Count(c=> c.ActivityTimeId == null);
-        vm.RecentWorks = activities.Select(c => c.Title).ToList();
+        vm.RecentWorks = activities.OrderByDescending(c=> c.Created).Select(c => c.Title).Take(20).ToList();
         return vm;
     }
 }

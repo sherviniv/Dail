@@ -46,7 +46,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">کار های اساین شده
                         </div>
-                        <div class="row no-gutters align-items-center" *ngIf="this.model.totalActivities > 0">
+                        <div class="row no-gutters align-items-center" *ngIf="model.totalActivities > 0">
                             <div class="col-auto">
                                 <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{assignedActsPercentage}}%</div>
                             </div>
@@ -93,6 +93,10 @@
                 <h6 class="m-0 font-weight-bold text-primary">آخرین کار های ثبت شده</h6>
             </div>
             <div class="card-body" style="min-height: 300px">
+                <h5 style="text-align: center;" *ngIf="!model.recentWorks || model.recentWorks?.length == 0">
+                    کاری هنوز ثبت نکرده اید
+                </h5>
+
                 <h6 class="font-weight-bold" *ngFor="let activity of model.recentWorks">{{activity}}</h6>
             </div>
         </div>

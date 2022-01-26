@@ -1,0 +1,72 @@
+<h3 class="mb-2 text-gray-800">پروفایل کاربر</h3>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <form class="user" #eform="ngForm" (ngSubmit)="onsubmit(eform)" novalidate>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">نام:</label>
+                    <input type="text" class="form-control form-control" [(ngModel)]="model.firstName" id="firstName"
+                        name="firstName" #firstName="ngModel" required>
+                    <div *ngIf="!firstName.valid  && (firstName.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!firstName.errors?.required">
+                            نام را وارد کنید
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="lastName">نام خانوادگی:</label>
+                    <input type="text" class="form-control form-control" [(ngModel)]="model.lastName" id="lastName"
+                        name="lastName" #lastName="ngModel" required>
+                    <div *ngIf="!lastName.valid  && (lastName.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!lastName.errors?.required">
+                            نام خانوادگی را وارد کنید
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-12">
+                    <label for="email">ایمیل:</label>
+                    <input type="email" class="form-control form-control" [(ngModel)]="model.email" id="email"
+                        name="email" #email="ngModel" disabled>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="password">رمز عبور جدید:</label>
+                    <input type="password" class="form-control form-control" [(ngModel)]="model.password" id="password"
+                        name="password" #password="ngModel">
+                    <div *ngIf="!password.valid  && (password.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!password.errors?.required">
+                            password is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12" *ngIf="password.touched && password.value">
+                    <label for="cpassword">تکرار رمز عبور جدید:</label>
+                    <input type="password" class="form-control form-control" id="cpassword" name="cpassword" ngModel
+                        #cpassword="ngModel">
+                    <div *ngIf="(cpassword.touched || eform.submitted && password.value)" class="invalid-input">
+                        <div [hidden]="cpassword.value == password.value">
+                            Password doesn't match.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-success btn-icon-split">
+                <span class="text">ثبت تغییرات</span>
+            </button>
+
+            <a [routerLink]="['/panel']" class="mr-2 btn btn-light btn-icon-split">
+                <span class="text">بازگشت</span>
+            </a>
+        </form>
+    </div>
+</div>
