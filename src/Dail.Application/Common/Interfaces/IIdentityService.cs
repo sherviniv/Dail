@@ -12,4 +12,6 @@ public interface IIdentityService
     Task<ServerResult<string>> UpdateUserAsync(UserDTO model);
     Task<ServerResult<string>> DeleteUserAsync(string userId);
     Task<ServerResult<string>> LoginUserAsync(LoginDTO model);
+    Task<UserDTO> GetCurrentUserInfo();
+    Task<ServerResult<string>> UpdateProfileAsync(UserDTO model);
 }

@@ -19,17 +19,20 @@ internal class IdentityService : IIdentityService
     private readonly IJwtHandler _jwtHandler;
     private readonly IMapper _mapper;
     private readonly IStringLocalizer<MessagesLocalizer> _localizer;
+    private readonly ICurrentUserService _currentUserService;
 
     public IdentityService(
         UserManager<ApplicationUser> userManager,
         IJwtHandler jwtHandler,
         IMapper mapper,
+        ICurrentUserService currentUserService,
         IStringLocalizer<MessagesLocalizer> localizer)
     {
         _userManager = userManager;
         _jwtHandler = jwtHandler;
         _mapper = mapper;
         _localizer = localizer;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ServerResult<string>> CreateUserAsync(UserDTO model)
@@ -92,6 +95,11 @@ internal class IdentityService : IIdentityService
         return _mapper.Map<UserDTO>(user);
     }
 
+    public async Task<UserDTO> GetCurrentUserInfo()
+    {
+        return await GetUserAsync(_currentUserService.UserId!);
+    }
+
     public async Task<string> GetUserNameAsync(string userId)
     {
         var user = await _userManager.Users.AsNoTracking().FirstAsync(u => u.Id == userId);
@@ -137,6 +145,34 @@ internal class IdentityService : IIdentityService
                 _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.NotFound);
 
         _mapper.Map(model, user);
+
+        var result = await _userManager.UpdateAsync(user);
+
+        if (!result.Succeeded)
+            throw new ValidationException(result.Errors);
+
+        return new(user.Id);
+    }
+
+    public async Task<ServerResult<string>> UpdateProfileAsync(UserDTO model)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == _currentUserService.Username);
+
+        if (user == null)
+            throw new DailException(MessageCodes.NotFound,
+                _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.NotFound);
+
+        user.FirstName = model.FirstName!;
+        user.LastName = model.LastName!;
+
+        if (!string.IsNullOrEmpty(model.Password))
+        {
+            await _userManager.RemovePasswordAsync(user);
+            var passResult = await _userManager.AddPasswordAsync(user, model.Password);
+
+            if (!passResult.Succeeded)
+                throw new ValidationException(passResult.Errors);
+        }
 
         var result = await _userManager.UpdateAsync(user);
 

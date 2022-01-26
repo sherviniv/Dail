@@ -36,31 +36,34 @@
                         name="email" #email="ngModel" disabled>
                 </div>
 
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
                     <label for="password">رمز عبور جدید:</label>
                     <input type="password" class="form-control form-control" [(ngModel)]="model.password" id="password"
-                        name="password" #password="ngModel">
+                        name="password" #password="ngModel" minlength="6">
                     <div *ngIf="!password.valid  && (password.touched || eform.submitted)" class="invalid-input">
                         <div [hidden]="!password.errors?.required">
-                            password is required
+                            
+                        </div>
+                        <div [hidden]="!password.errors?.minlength">
+                            حداقل 6 کارکتر وارد کنید
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group col-md-12" *ngIf="password.touched && password.value">
+                <div class="form-group col-md-6" *ngIf="password.touched && password.value">
                     <label for="cpassword">تکرار رمز عبور جدید:</label>
                     <input type="password" class="form-control form-control" id="cpassword" name="cpassword" ngModel
                         #cpassword="ngModel">
                     <div *ngIf="(cpassword.touched || eform.submitted && password.value)" class="invalid-input">
                         <div [hidden]="cpassword.value == password.value">
-                            Password doesn't match.
+                            تکرار رمز عبور صحیح نیست
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <button type="submit" class="btn btn-success btn-icon-split">
+            <button type="submit" class="btn btn-success btn-icon-split" [disabled]="!eform.dirty">
                 <span class="text">ثبت تغییرات</span>
             </button>
 

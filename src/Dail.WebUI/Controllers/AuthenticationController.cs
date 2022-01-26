@@ -17,15 +17,19 @@ public class AuthenticationController : ApiController
 
     [AllowAnonymous]
     [HttpPost("[action]")]
-    public async Task<ServerResult<string>> Login(LoginDTO model)
-    {
-        return await _identityService.LoginUserAsync(model);
-    }
+    public async Task<ServerResult<string>> Login(LoginDTO model) 
+        => await _identityService.LoginUserAsync(model);
 
     [AllowAnonymous]
     [HttpPost("[action]")]
-    public async Task<ServerResult<string>> Register(UserDTO model)
-    {
-        return await _identityService.CreateUserAsync(model);
-    }
+    public async Task<ServerResult<string>> Register(UserDTO model) 
+        => await _identityService.CreateUserAsync(model);
+
+    [HttpPost("[action]")]
+    public async Task<UserDTO> GetUserInfo() 
+        => await _identityService.GetCurrentUserInfo();
+
+    [HttpPost("[action]")]
+    public async Task<ServerResult<string>> UpdateProfile(UserDTO model)
+        => await _identityService.UpdateProfileAsync(model);
 }
