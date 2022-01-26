@@ -11,8 +11,12 @@ const routes: Routes = [
     children: [
       { path: "", component: UserDashboardComponent },
       { path: "profile", component: ProfileComponent },
+      {
+        path: 'time-schedules',
+        loadChildren: () => import('src/app/pages/time-schedules/time-schedules.module').then(mod => mod.TimeSchedulesModule)
+      },
     ]
-  }
+  },
 ];
 
 @NgModule({

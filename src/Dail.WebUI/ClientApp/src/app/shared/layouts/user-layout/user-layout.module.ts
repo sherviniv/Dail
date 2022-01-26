@@ -11,7 +11,8 @@ import { ProfileComponent } from 'src/app/pages/profile/profile.component';
   declarations: [
     UserLayoutComponent,
     UserDashboardComponent,
-    ProfileComponent
+    ProfileComponent,
+
   ],
   imports: [
     CommonModule,
