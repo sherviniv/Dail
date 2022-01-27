@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  dail.webui:
+    image: ${DOCKER_REGISTRY-}dailwebui
+    build:
+      context: .
+      dockerfile: src/Dail.WebUI/Dockerfile
