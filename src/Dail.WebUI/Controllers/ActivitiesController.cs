@@ -1,8 +1,8 @@
 ﻿using Dail.Application.Features.Activities.Commands.AddActivity;
+using Dail.Application.Features.Activities.Commands.ModifyActivity;
+using Dail.Application.Features.Activities.Commands.RemoveActivity;
 using Dail.Application.Features.Activities.Models;
 using Dail.Application.Features.Activities.Queries.GetUserActivities;
-using Dail.Application.Features.ActivityTimes.Commands.ModifyActivityTime;
-using Dail.Application.Features.ActivityTimes.Commands.RemoveActivityTime;
 using Dail.Domain.Constants;
 using Dail.WebUI.Base;
 using MediatR;
@@ -23,17 +23,17 @@ public class ActivitiesController : ApiController
 
     [HttpGet("[action]")]
     public async Task<IList<ActivityViewModel>> GetActivities()
-    => await _mediatr.Send(new GetUserActivitiesQuery());
+        => await _mediatr.Send(new GetUserActivitiesQuery());
 
     [HttpPost("[action]")]
     public async Task<int> Add(AddActivityCommand command)
         => await _mediatr.Send(command);
 
     [HttpPut("[action]")]
-    public async Task<int> Modfiy(ModifyActivityTimeCommand command)
+    public async Task<int> Modfiy(ModifyActivityCommand command)
         => await _mediatr.Send(command);
 
     [HttpDelete("[action]")]
-    public async Task<Unit> Remove(RemoveActivityTimeCommand command)
+    public async Task<Unit> Remove(RemoveActivityCommand command)
         => await _mediatr.Send(command);
 }

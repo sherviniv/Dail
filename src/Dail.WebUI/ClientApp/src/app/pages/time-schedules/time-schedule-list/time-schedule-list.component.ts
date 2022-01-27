@@ -61,7 +61,7 @@ export class TimeScheduleListComponent implements OnInit {
     await this.client.remove({ id: this.selected[0].id! } as any).toPromise().then(
       response => {
         this.rows = response;
-        this.toastr.info("با موفقیت ثبت شد")
+        this.toastr.info("با موفقیت انجام شد")
         this.loadTable();
       },
       error =>

@@ -146,7 +146,7 @@ export class ActivitiesClient {
      * @param body (optional) 
      * @return Success
      */
-    modfiy(body: ModifyActivityTimeCommand | undefined): Observable<number> {
+    modfiy(body: ModifyActivityCommand | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/Activities/Modfiy";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -203,7 +203,7 @@ export class ActivitiesClient {
      * @param body (optional) 
      * @return Success
      */
-    remove(body: RemoveActivityTimeCommand | undefined): Observable<Unit> {
+    remove(body: RemoveActivityCommand | undefined): Observable<Unit> {
         let url_ = this.baseUrl + "/api/Activities/Remove";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1287,9 +1287,8 @@ export class ActivityViewModel implements IActivityViewModel {
     title!: string | undefined;
     description!: string | undefined;
     color!: string | undefined;
-    day!: DayOfWeek;
-    startTime!: string | undefined;
-    endTime!: string | undefined;
+    created!: Date;
+    lastModified!: Date | undefined;
 
     constructor(data?: IActivityViewModel) {
         if (data) {
@@ -1306,9 +1305,8 @@ export class ActivityViewModel implements IActivityViewModel {
             this.title = _data["title"];
             this.description = _data["description"];
             this.color = _data["color"];
-            this.day = _data["day"];
-            this.startTime = _data["startTime"];
-            this.endTime = _data["endTime"];
+            this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
+            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : <any>undefined;
         }
     }
 
@@ -1325,9 +1323,8 @@ export class ActivityViewModel implements IActivityViewModel {
         data["title"] = this.title;
         data["description"] = this.description;
         data["color"] = this.color;
-        data["day"] = this.day;
-        data["startTime"] = this.startTime;
-        data["endTime"] = this.endTime;
+        data["created"] = this.created ? this.created.toISOString() : <any>undefined;
+        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
         return data;
     }
 }
@@ -1337,9 +1334,8 @@ export interface IActivityViewModel {
     title: string | undefined;
     description: string | undefined;
     color: string | undefined;
-    day: DayOfWeek;
-    startTime: string | undefined;
-    endTime: string | undefined;
+    created: Date;
+    lastModified: Date | undefined;
 }
 
 export class AddActivityCommand implements IAddActivityCommand {
@@ -1560,6 +1556,54 @@ export interface ILoginDTO {
     password: string | undefined;
 }
 
+export class ModifyActivityCommand implements IModifyActivityCommand {
+    id!: number;
+    title!: string | undefined;
+    description!: string | undefined;
+    color!: string | undefined;
+
+    constructor(data?: IModifyActivityCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.description = _data["description"];
+            this.color = _data["color"];
+        }
+    }
+
+    static fromJS(data: any): ModifyActivityCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModifyActivityCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        data["color"] = this.color;
+        return data;
+    }
+}
+
+export interface IModifyActivityCommand {
+    id: number;
+    title: string | undefined;
+    description: string | undefined;
+    color: string | undefined;
+}
+
 export class ModifyActivityTimeCommand implements IModifyActivityTimeCommand {
     id!: number;
     day!: DayOfWeek;
@@ -1654,6 +1698,42 @@ export interface IModifyTimeScheduleCommand {
     id: number;
     title: string | undefined;
     description: string | undefined;
+}
+
+export class RemoveActivityCommand implements IRemoveActivityCommand {
+    id!: number;
+
+    constructor(data?: IRemoveActivityCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): RemoveActivityCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RemoveActivityCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IRemoveActivityCommand {
+    id: number;
 }
 
 export class RemoveActivityTimeCommand implements IRemoveActivityTimeCommand {

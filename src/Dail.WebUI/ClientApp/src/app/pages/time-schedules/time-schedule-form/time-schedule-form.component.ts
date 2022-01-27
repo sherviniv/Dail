@@ -36,8 +36,8 @@ export class TimeScheduleFormComponent implements OnInit {
       error =>
         this.toastr.error("خطا در دریافت اطلاعات")
     );
-    this.spinner.hide('main');  }
-
+    this.spinner.hide('main'); 
+   }
 
   onsubmit(form: NgForm) {
 
