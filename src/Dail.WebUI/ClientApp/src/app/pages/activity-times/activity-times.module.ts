@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CoreModule } from 'src/app/core/core.module';
 import { ActivityTimesRoutingModule } from './activity-times-routing.module';
 import { ActivityTimesListComponent } from './activity-times-list/activity-times-list.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { ActivityTimesListComponent } from './activity-times-list/activity-times
     CoreModule,
     CommonModule,
     FormsModule,
+    NgxDatatableModule,
     ActivityTimesRoutingModule
   ]
 })

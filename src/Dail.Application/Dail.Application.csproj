@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Dail.Domain\Dail.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\ActivityTimes\Queries\" />
-  </ItemGroup>
-
 </Project>

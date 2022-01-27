@@ -327,6 +327,64 @@ export class ActivityTimesClient {
     }
 
     /**
+     * @return Success
+     */
+    getActivityTimesList(): Observable<ActivityTimeInfoViewModel[]> {
+        let url_ = this.baseUrl + "/api/ActivityTimes/GetActivityTimesList";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetActivityTimesList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetActivityTimesList(<any>response_);
+                } catch (e) {
+                    return <Observable<ActivityTimeInfoViewModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ActivityTimeInfoViewModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetActivityTimesList(response: HttpResponseBase): Observable<ActivityTimeInfoViewModel[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ActivityTimeInfoViewModel.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ActivityTimeInfoViewModel[]>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -1090,6 +1148,74 @@ export class TimeSchedulesClient {
         }
         return _observableOf<Unit>(<any>null);
     }
+}
+
+export class ActivityTimeInfoViewModel implements IActivityTimeInfoViewModel {
+    id!: number;
+    day!: DayOfWeek;
+    title!: string | undefined;
+    startTime!: string | undefined;
+    endTime!: string | undefined;
+    timeSchedulesTitle!: string | undefined;
+    timeScheduleId!: number;
+    created!: Date;
+    lastModified!: Date | undefined;
+
+    constructor(data?: IActivityTimeInfoViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.day = _data["day"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
+            this.timeSchedulesTitle = _data["timeSchedulesTitle"];
+            this.timeScheduleId = _data["timeScheduleId"];
+            this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
+            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ActivityTimeInfoViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActivityTimeInfoViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["day"] = this.day;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
+        data["timeSchedulesTitle"] = this.timeSchedulesTitle;
+        data["timeScheduleId"] = this.timeScheduleId;
+        data["created"] = this.created ? this.created.toISOString() : <any>undefined;
+        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IActivityTimeInfoViewModel {
+    id: number;
+    day: DayOfWeek;
+    title: string | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
+    timeSchedulesTitle: string | undefined;
+    timeScheduleId: number;
+    created: Date;
+    lastModified: Date | undefined;
 }
 
 export class ActivityTimeViewModel implements IActivityTimeViewModel {

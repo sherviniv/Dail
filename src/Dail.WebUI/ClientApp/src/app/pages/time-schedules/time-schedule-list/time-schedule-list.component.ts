@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { TimeSchedulesClient } from 'src/app/core/services/dail.service';
-import { ColumnMode, SortType, SelectionType, TableColumn } from '@swimlane/ngx-datatable';
+import { ColumnMode, SelectionType, TableColumn } from '@swimlane/ngx-datatable';
 import { Router } from '@angular/router';
 import { ConfirmDialogService } from 'src/app/shared/components/confirm-dialog/confirm-dialog.service';
-import { DatePipe } from '@angular/common';
-import { PersianDatePipe } from 'src/app/core/pipe/persian-date.pipe';
+import { PersianDatePipe } from 'src/app/core/pipes/persian-date.pipe';
 
 @Component({
   selector: 'app-time-schedule-list',
@@ -43,7 +42,7 @@ export class TimeScheduleListComponent implements OnInit {
         this.rows = response;
       },
       error =>
-        this.toastr.error("خطا در ثبت اطلاعات")
+        this.toastr.error("خطا در دریافت اطلاعات")
     );
     this.spinner.hide('main');
   }
