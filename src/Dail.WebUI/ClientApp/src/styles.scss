@@ -88,3 +88,35 @@
   background-position: center;
   background-size: cover;
 }
+
+.fab-btn {
+  position: fixed;
+  width: 4.5rem !important;
+  height: 4.5rem !important;
+  bottom: 40px;
+  left: 40px;
+  background-color: #1cc88a;
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  font-size: 6rem;
+}
+
+  .fab-btn .fas {
+      font-size:2rem !important;
+  }
+
+  //ngx-table
+.ngx-datatable{
+  border: 1.5px solid #e3e6f0;
+}
+
+.datatable-body-row{
+  border: 1px solid #e3e6f0;
+}
+
+  .datatable-header-cell-label{
+    font-weight: bold;
+    font-size: 16px;
+  }

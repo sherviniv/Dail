@@ -25,6 +25,7 @@
     "@angular/router": "~13.1.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0",
+    "@swimlane/ngx-datatable": "^20.0.0",
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
     "ngx-spinner": "^13.0.0",
