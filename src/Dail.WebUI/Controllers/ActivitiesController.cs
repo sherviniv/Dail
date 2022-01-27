@@ -2,6 +2,7 @@
 using Dail.Application.Features.Activities.Commands.ModifyActivity;
 using Dail.Application.Features.Activities.Commands.RemoveActivity;
 using Dail.Application.Features.Activities.Models;
+using Dail.Application.Features.Activities.Queries.GetActivityById;
 using Dail.Application.Features.Activities.Queries.GetUserActivities;
 using Dail.Domain.Constants;
 using Dail.WebUI.Base;
@@ -20,6 +21,10 @@ public class ActivitiesController : ApiController
     {
         _mediatr = mediatr;
     }
+
+    [HttpGet("[action]")]
+    public async Task<ActivityViewModel> GetById(int id)
+        => await _mediatr.Send(new GetActivityByIdQuery(id));
 
     [HttpGet("[action]")]
     public async Task<IList<ActivityViewModel>> GetActivities()

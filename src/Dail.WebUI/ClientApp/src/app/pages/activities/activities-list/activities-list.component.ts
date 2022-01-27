@@ -47,7 +47,7 @@ export class ActivitiesListComponent implements OnInit {
     this.spinner.hide('main');
   }
   edit() {
-    this.router.navigate(['/panel/time-schedules/edit/' + this.selected[0].id]);
+    this.router.navigate(['/panel/activities/edit/' + this.selected[0].id]);
   }
 
   async remove() {
