@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { TimeSchedulesClient } from 'src/app/core/services/dail.service';
-import { ColumnMode, SortType, SelectionType } from '@swimlane/ngx-datatable';
+import { ColumnMode, SortType, SelectionType, TableColumn } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-time-schedule-list',
@@ -14,62 +14,18 @@ export class TimeScheduleListComponent implements OnInit {
   SelectionType = SelectionType
   selected = [];
 
-  rows = [
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
+  rows : any = [];
 
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Molly', gender: 'Female', company: 'Burger King' }
+  title!: string | undefined;
+  created!: Date;
+  lastModified!: Date | undefined;
+
+  columns: TableColumn[] = [
+    { prop: 'title', name: 'عنوان' },
+    { prop: 'created', name: 'تاریخ ثبت' },
+    { prop: 'description', name: 'توضیحات' },
+    { prop: 'lastModified', name: 'آخرین ویرایش' }
   ];
-  columns = [{ prop: 'name', name: 'نام' }, { name: 'Gender' }, { name: 'Company' }];
 
   constructor(
     private client: TimeSchedulesClient,
@@ -77,12 +33,14 @@ export class TimeScheduleListComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.loadTable();
   }
 
   async loadTable() {
     this.spinner.show('main');
     await this.client.getTimeScheduleList().toPromise().then(
       response => {
+        this.rows = response;
       },
       error =>
         this.toastr.error("خطا در ثبت اطلاعات")
@@ -90,7 +48,7 @@ export class TimeScheduleListComponent implements OnInit {
     this.spinner.hide('main');
   }
 
-  onSelect({ selected } : any) {
+  onSelect({ selected }: any) {
     console.log('Select Event', this.selected[0]);
   }
 

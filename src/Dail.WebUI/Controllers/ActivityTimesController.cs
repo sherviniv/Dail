@@ -23,11 +23,11 @@ public class ActivityTimesController : ApiController
     public async Task<int> Add(AddActivityTimeCommand command)
         => await _mediatr.Send(command);
 
-    [HttpPut]
+    [HttpPut("[action]")]
     public async Task<int> Modfiy(ModifyActivityTimeCommand command)
         => await _mediatr.Send(command);
 
-    [HttpDelete]
+    [HttpDelete("[action]")]
     public async Task<Unit> Remove(RemoveActivityTimeCommand command)
         => await _mediatr.Send(command);
 }

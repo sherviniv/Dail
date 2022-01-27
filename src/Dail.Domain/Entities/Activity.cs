@@ -11,7 +11,7 @@ public class Activity : AuditableEntity
     public string Title { get; set; }
 
     [MaxLength(1024)]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// Hex format

@@ -4,11 +4,15 @@ using Dail.Application.Features.TimeSchedules.Commands.RemoveTimeSchedule;
 using Dail.Application.Features.TimeSchedules.Models;
 using Dail.Application.Features.TimeSchedules.Queries.GetTimeSchedule;
 using Dail.Application.Features.TimeSchedules.Queries.GetTimeScheduleList;
+using Dail.Domain.Constants;
 using Dail.WebUI.Base;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dail.WebUI.Controllers;
+
+[Authorize(Roles = SystemRoles.DailUser)]
 public class TimeSchedulesController : ApiController
 {
     private readonly ISender _mediatr;
@@ -26,15 +30,15 @@ public class TimeSchedulesController : ApiController
     public async Task<IList<TimeScheduleInfoViewModel>> GetTimeScheduleList()
         => await _mediatr.Send(new GetTimeScheduleListQuery());
 
-    [HttpPost]
+    [HttpPost("[action]")]
     public async Task<int> Add(AddTimeScheduleCommand command)
         => await _mediatr.Send(command);
 
-    [HttpPut]
+    [HttpPut("[action]")]
     public async Task<int> Modfiy(ModifyTimeScheduleCommand command)
         => await _mediatr.Send(command);
 
-    [HttpDelete]
+    [HttpDelete("[action]")]
     public async Task<Unit> Remove(RemoveTimeScheduleCommand command)
         => await _mediatr.Send(command);
 }

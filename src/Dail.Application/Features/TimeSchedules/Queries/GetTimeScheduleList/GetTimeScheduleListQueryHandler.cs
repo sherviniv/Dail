@@ -24,7 +24,7 @@ public class GetTimeScheduleListQueryHandler : IRequestHandler<GetTimeScheduleLi
 
     public async Task<IList<TimeScheduleInfoViewModel>> Handle(GetTimeScheduleListQuery request, CancellationToken cancellationToken)
     {
-        var vm = await _context.Activities.Where(c => c.CreatedBy == _currentUserService.UserId)
+        var vm = await _context.TimeSchedules.Where(c => c.CreatedBy == _currentUserService.UserId)
                   .AsNoTracking().ProjectTo<TimeScheduleInfoViewModel>(_mapper.ConfigurationProvider).ToListAsync();
         return vm;
     }

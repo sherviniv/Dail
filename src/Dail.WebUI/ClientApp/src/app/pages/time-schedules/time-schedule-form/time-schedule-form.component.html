@@ -1,1 +1,44 @@
-<p>time-schedule-form works!</p>
+<h3 class="mb-2 text-gray-800">{{id ? "ویرایش" : "افزودن"}} برنامه زمانی</h3>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <form class="user" #eform="ngForm" (ngSubmit)="onsubmit(eform)" novalidate>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="title">عنوان:</label>
+                    <input type="text" class="form-control form-control" [(ngModel)]="model.title" id="title"
+                        name="title" #title="ngModel" required maxlength="128">
+                    <div *ngIf="!title.valid  && (title.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!title.errors?.required">
+                            عنوان را وارد کنید
+                        </div>
+                        <div [hidden]="!title.errors?.maxlength">
+                            حداکثر کارکتر 128 تا میباشد
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="description">توضیحات:</label>
+                    <textarea class="form-control form-control" [(ngModel)]="model.description" id="description"
+                        name="description" #description="ngModel" maxlength="512">
+                    </textarea>
+                    <div *ngIf="!description.valid  && (description.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!description.errors?.maxlength">
+                            حداکثر کارکتر 512 تا میباشد
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-icon-split" [disabled]="!eform.dirty">
+                <span class="text">ثبت</span>
+            </button>
+
+            <a [routerLink]="['../']" class="mr-2 btn btn-light btn-icon-split">
+                <span class="text">بازگشت</span>
+            </a>
+        </form>
+    </div>
+</div>

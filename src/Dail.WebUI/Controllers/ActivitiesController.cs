@@ -21,7 +21,7 @@ public class ActivitiesController : ApiController
         _mediatr = mediatr;
     }
 
-    [HttpGet]
+    [HttpGet("[action]")]
     public async Task<IList<ActivityViewModel>> GetActivities()
     => await _mediatr.Send(new GetUserActivitiesQuery());
 
@@ -29,11 +29,11 @@ public class ActivitiesController : ApiController
     public async Task<int> Add(AddActivityCommand command)
         => await _mediatr.Send(command);
 
-    [HttpPut]
+    [HttpPut("[action]")]
     public async Task<int> Modfiy(ModifyActivityTimeCommand command)
         => await _mediatr.Send(command);
 
-    [HttpDelete]
+    [HttpDelete("[action]")]
     public async Task<Unit> Remove(RemoveActivityTimeCommand command)
         => await _mediatr.Send(command);
 }

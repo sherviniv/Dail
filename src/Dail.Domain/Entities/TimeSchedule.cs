@@ -16,8 +16,8 @@ public class TimeSchedule : AuditableEntity
     [MaxLength(128)]
     public string Title { get; set; }
 
-    [MaxLength(128)]
-    public string Description { get; set; }
+    [MaxLength(512)]
+    public string? Description { get; set; }
 
     public virtual ICollection<ActivityTime> ActivityTimes { get; set; }
 }
