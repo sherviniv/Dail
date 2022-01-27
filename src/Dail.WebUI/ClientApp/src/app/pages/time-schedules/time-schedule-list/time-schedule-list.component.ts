@@ -5,6 +5,8 @@ import { TimeSchedulesClient } from 'src/app/core/services/dail.service';
 import { ColumnMode, SortType, SelectionType, TableColumn } from '@swimlane/ngx-datatable';
 import { Router } from '@angular/router';
 import { ConfirmDialogService } from 'src/app/shared/components/confirm-dialog/confirm-dialog.service';
+import { DatePipe } from '@angular/common';
+import { PersianDatePipe } from 'src/app/core/pipe/persian-date.pipe';
 
 @Component({
   selector: 'app-time-schedule-list',
@@ -18,9 +20,9 @@ export class TimeScheduleListComponent implements OnInit {
   rows: any = [];
   columns: TableColumn[] = [
     { prop: 'title', name: 'عنوان' },
-    { prop: 'created', name: 'تاریخ ثبت' },
+    { prop: 'created', name: 'تاریخ ثبت', pipe: new PersianDatePipe() },
     { prop: 'description', name: 'توضیحات' },
-    { prop: 'lastModified', name: 'آخرین ویرایش' }
+    { prop: 'lastModified', name: 'آخرین ویرایش' , pipe: new PersianDatePipe() }
   ];
 
   constructor(
@@ -50,14 +52,14 @@ export class TimeScheduleListComponent implements OnInit {
     this.router.navigate(['/panel/time-schedules/edit/' + this.selected[0].id]);
   }
 
-  async remove(){
+  async remove() {
     let isConfirmed: boolean = await this.confirm.confirm("رکورد انتخابی حذف شود؟"
-    , "برای خذف رکورد روی حذف کلیک کنید", "حذف", "لغو", "md");
+      , "برای خذف رکورد روی حذف کلیک کنید", "حذف", "لغو", "md");
 
-    if(!isConfirmed) return;
+    if (!isConfirmed) return;
 
     this.spinner.show('main');
-    await this.client.remove({id :this.selected[0].id! } as any).toPromise().then(
+    await this.client.remove({ id: this.selected[0].id! } as any).toPromise().then(
       response => {
         this.rows = response;
         this.toastr.info("با موفقیت ثبت شد")
