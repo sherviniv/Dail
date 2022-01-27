@@ -3,6 +3,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { TimeSchedulesClient } from 'src/app/core/services/dail.service';
 import { ColumnMode, SortType, SelectionType, TableColumn } from '@swimlane/ngx-datatable';
+import { Router } from '@angular/router';
+import { ConfirmDialogService } from 'src/app/shared/components/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-time-schedule-list',
@@ -12,14 +14,8 @@ import { ColumnMode, SortType, SelectionType, TableColumn } from '@swimlane/ngx-
 export class TimeScheduleListComponent implements OnInit {
   ColumnMode = ColumnMode;
   SelectionType = SelectionType
-  selected = [];
-
-  rows : any = [];
-
-  title!: string | undefined;
-  created!: Date;
-  lastModified!: Date | undefined;
-
+  selected: any = [];
+  rows: any = [];
   columns: TableColumn[] = [
     { prop: 'title', name: 'عنوان' },
     { prop: 'created', name: 'تاریخ ثبت' },
@@ -30,7 +26,9 @@ export class TimeScheduleListComponent implements OnInit {
   constructor(
     private client: TimeSchedulesClient,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService) { }
+    private router: Router,
+    private spinner: NgxSpinnerService,
+    private confirm: ConfirmDialogService) { }
 
   ngOnInit(): void {
     this.loadTable();
@@ -48,8 +46,26 @@ export class TimeScheduleListComponent implements OnInit {
     this.spinner.hide('main');
   }
 
-  onSelect({ selected }: any) {
-    console.log('Select Event', this.selected[0]);
+  edit() {
+    this.router.navigate(['/panel/time-schedules/edit/' + this.selected[0].id]);
   }
 
+  async remove(){
+    let isConfirmed: boolean = await this.confirm.confirm("رکورد انتخابی حذف شود؟"
+    , "برای خذف رکورد روی حذف کلیک کنید", "حذف", "لغو", "md");
+
+    if(!isConfirmed) return;
+
+    this.spinner.show('main');
+    await this.client.remove({id :this.selected[0].id! } as any).toPromise().then(
+      response => {
+        this.rows = response;
+        this.toastr.info("با موفقیت ثبت شد")
+        this.loadTable();
+      },
+      error =>
+        this.toastr.error("خطا در حذف اطلاعات")
+    );
+    this.spinner.hide('main');
+  }
 }

@@ -3,6 +3,7 @@ using Dail.Application.Features.TimeSchedules.Commands.ModifyTimeSchedule;
 using Dail.Application.Features.TimeSchedules.Commands.RemoveTimeSchedule;
 using Dail.Application.Features.TimeSchedules.Models;
 using Dail.Application.Features.TimeSchedules.Queries.GetTimeSchedule;
+using Dail.Application.Features.TimeSchedules.Queries.GetTimeScheduleById;
 using Dail.Application.Features.TimeSchedules.Queries.GetTimeScheduleList;
 using Dail.Domain.Constants;
 using Dail.WebUI.Base;
@@ -25,6 +26,10 @@ public class TimeSchedulesController : ApiController
     [HttpGet("[action]")]
     public async Task<TimeScheduleViewModel> GetTimeSchedule(GetTimeScheduleQuery query)
        => await _mediatr.Send(query);
+
+    [HttpGet("[action]")]
+    public async Task<TimeScheduleInfoViewModel> GetById(int id)
+       => await _mediatr.Send(new GetTimeScheduleByIdQuery(id));
 
     [HttpGet("[action]")]
     public async Task<IList<TimeScheduleInfoViewModel>> GetTimeScheduleList()

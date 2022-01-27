@@ -22,7 +22,22 @@ export class TimeScheduleFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    if(this.id){
+      this.loadModel();
+    }
   }
+
+  async loadModel(){
+    this.spinner.show('main');
+    await this.client.getById(this.id!).toPromise().then(
+      response => {
+        this.model = response;
+      },
+      error =>
+        this.toastr.error("خطا در دریافت اطلاعات")
+    );
+    this.spinner.hide('main');  }
+
 
   onsubmit(form: NgForm) {
 
