@@ -866,21 +866,21 @@ export class TimeSchedulesClient {
     }
 
     /**
-     * @param body (optional) 
+     * @param id (optional) 
      * @return Success
      */
-    getTimeSchedule(body: GetTimeScheduleQuery | undefined): Observable<TimeScheduleViewModel> {
-        let url_ = this.baseUrl + "/api/TimeSchedules/GetTimeSchedule";
+    getTimeSchedule(id: number | undefined): Observable<TimeScheduleViewModel> {
+        let url_ = this.baseUrl + "/api/TimeSchedules/GetTimeSchedule?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "text/plain"
             })
         };
@@ -1534,42 +1534,6 @@ export enum DayOfWeek {
     _4 = 4,
     _5 = 5,
     _6 = 6,
-}
-
-export class GetTimeScheduleQuery implements IGetTimeScheduleQuery {
-    id!: number;
-
-    constructor(data?: IGetTimeScheduleQuery) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): GetTimeScheduleQuery {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetTimeScheduleQuery();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data;
-    }
-}
-
-export interface IGetTimeScheduleQuery {
-    id: number;
 }
 
 export class LoginDTO implements ILoginDTO {

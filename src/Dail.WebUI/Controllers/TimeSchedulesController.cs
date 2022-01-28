@@ -24,8 +24,8 @@ public class TimeSchedulesController : ApiController
     }
 
     [HttpGet("[action]")]
-    public async Task<TimeScheduleViewModel> GetTimeSchedule(GetTimeScheduleQuery query)
-       => await _mediatr.Send(query);
+    public async Task<TimeScheduleViewModel> GetTimeSchedule(int id)
+       => await _mediatr.Send(new GetTimeScheduleQuery(id));
 
     [HttpGet("[action]")]
     public async Task<TimeScheduleInfoViewModel> GetById(int id)

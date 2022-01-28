@@ -51,6 +51,10 @@ export class TimeScheduleListComponent implements OnInit {
     this.router.navigate(['/panel/time-schedules/edit/' + this.selected[0].id]);
   }
 
+  assign() {
+    this.router.navigate(['/panel/time-schedules/assign/' + this.selected[0].id]);
+  }
+
   async remove() {
     let isConfirmed: boolean = await this.confirm.confirm("رکورد انتخابی حذف شود؟"
       , "برای خذف رکورد روی حذف کلیک کنید", "حذف", "لغو", "md");
