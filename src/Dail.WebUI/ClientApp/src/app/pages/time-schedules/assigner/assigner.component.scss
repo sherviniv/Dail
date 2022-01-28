@@ -1,0 +1,16 @@
+.activity-card-holder{
+    flex-direction: row;
+    height: 110px;
+    overflow-y: scroll;
+}
+
+.trash-box{
+    height: 110px;
+}
+
+.activity-card-body{
+    font-size: 14px;
+    height: 65px;
+    padding : 8px; 
+    cursor: default;
+}

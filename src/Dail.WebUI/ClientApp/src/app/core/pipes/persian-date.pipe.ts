@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'persiandateshort' })
 export class PersianDatePipe implements PipeTransform {

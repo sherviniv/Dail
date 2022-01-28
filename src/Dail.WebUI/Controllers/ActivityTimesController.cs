@@ -2,6 +2,7 @@
 using Dail.Application.Features.ActivityTimes.Commands.ModifyActivityTime;
 using Dail.Application.Features.ActivityTimes.Commands.RemoveActivityTime;
 using Dail.Application.Features.ActivityTimes.Models;
+using Dail.Application.Features.ActivityTimes.Queries.GetActivityTimeById;
 using Dail.Application.Features.ActivityTimes.Queries.GetActivityTimesList;
 using Dail.Domain.Constants;
 using Dail.WebUI.Base;
@@ -20,6 +21,10 @@ public class ActivityTimesController : ApiController
     {
         _mediatr = mediatr;
     }
+
+    [HttpGet("[action]")]
+    public async Task<ActivityTimeInfoViewModel> GetById(int id)
+        => await _mediatr.Send(new GetActivityTimeByIdQuery(id));
 
     [HttpPost("[action]")]
     public async Task<int> Add(AddActivityTimeCommand command)

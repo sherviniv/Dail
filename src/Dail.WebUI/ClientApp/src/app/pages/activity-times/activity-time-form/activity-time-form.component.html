@@ -1,0 +1,72 @@
+<h3 class="mb-2 text-gray-800">{{id ? "ویرایش" : "افزودن"}} زمان مورد علاقه</h3>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <form class="user" #eform="ngForm" (ngSubmit)="onsubmit(eform)" novalidate>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="title">عنوان</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.title" id="title"
+                        name="title" #title="ngModel" required maxlength="128">
+                    <div *ngIf="!title.valid  && (title.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!title.errors?.required">
+                            عنوان را وارد کنید
+                        </div>
+                        <div [hidden]="!title.errors?.maxlength">
+                            حداکثر کارکتر 128 تا میباشد
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="day">روز</label>
+                    <select [(ngModel)]="model.day" class="form-control" #day="ngModel" id="day" name="day" required>
+                        <option *ngFor="let day of days()" [value]="day">{{day | weekdaytostring}}</option>
+                    </select>
+                    <div *ngIf="!day.valid  && (day.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!day.errors?.required">
+                            روز را انتخاب کنید
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="startTime">از ساعت</label>
+                    <input type="time" class="form-control" [(ngModel)]="model.startTime" id="startTime"
+                        name="startTime" #startTime="ngModel" required maxlength="128">
+                    <div *ngIf="!startTime.valid  && (startTime.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!startTime.errors?.required">
+                            عنوان را وارد کنید
+                        </div>
+                        <div [hidden]="!startTime.errors?.maxlength">
+                            حداکثر کارکتر 128 تا میباشد
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="endTime">تا ساعت</label>
+                    <input type="time" class="form-control" [(ngModel)]="model.endTime" id="endTime"
+                        name="endTime" #endTime="ngModel" required maxlength="128">
+                    <div *ngIf="!endTime.valid  && (endTime.touched || eform.submitted)" class="invalid-input">
+                        <div [hidden]="!endTime.errors?.required">
+                            عنوان را وارد کنید
+                        </div>
+                        <div [hidden]="!endTime.errors?.maxlength">
+                            حداکثر کارکتر 128 تا میباشد
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-icon-split" [disabled]="!eform.dirty">
+                <span class="text">ثبت</span>
+            </button>
+
+            <a [routerLink]="[returnUrl]" class="mr-2 btn btn-light btn-icon-split">
+                <span class="text">بازگشت</span>
+            </a>
+        </form>
+    </div>
+</div>

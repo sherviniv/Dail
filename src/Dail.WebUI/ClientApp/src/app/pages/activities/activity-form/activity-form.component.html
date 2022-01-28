@@ -6,8 +6,8 @@
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="title">عنوان:</label>
-                    <input type="text" class="form-control form-control" [(ngModel)]="model.title" id="title"
+                    <label for="title">عنوان</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.title" id="title"
                         name="title" #title="ngModel" required maxlength="128">
                     <div *ngIf="!title.valid  && (title.touched || eform.submitted)" class="invalid-input">
                         <div [hidden]="!title.errors?.required">
@@ -20,14 +20,14 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="color">رنگ:</label><br>
+                    <label for="color">رنگ</label><br>
                     <ngx-colors ngx-colors-trigger [(ngModel)]="model.color" name="color" style="display: inline-block; margin:5px;">
                     </ngx-colors>
                 </div>
 
                 <div class="form-group col-md-12">
-                    <label for="description">توضیحات:</label>
-                    <textarea class="form-control form-control" [(ngModel)]="model.description" id="description"
+                    <label for="description">توضیحات</label>
+                    <textarea class="form-control" [(ngModel)]="model.description" id="description"
                         name="description" #description="ngModel" maxlength="512">
                     </textarea>
                     <div *ngIf="!description.valid  && (description.touched || eform.submitted)" class="invalid-input">
@@ -42,7 +42,7 @@
                 <span class="text">ثبت</span>
             </button>
 
-            <a [routerLink]="['/panel/activities']" class="mr-2 btn btn-light btn-icon-split">
+            <a [routerLink]="[returnUrl]" class="mr-2 btn btn-light btn-icon-split">
                 <span class="text">بازگشت</span>
             </a>
         </form>

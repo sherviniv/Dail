@@ -3,29 +3,40 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ActivitiesClient, AddActivityCommand, ModifyActivityCommand } from 'src/app/core/services/dail.service';
+import { ActivityTimesClient, AddActivityTimeCommand, DayOfWeek, ModifyActivityTimeCommand } from 'src/app/core/services/dail.service';
 
 @Component({
-  selector: 'app-activity-form',
-  templateUrl: './activity-form.component.html',
-  styleUrls: ['./activity-form.component.scss']
+  selector: 'app-activity-time-form',
+  templateUrl: './activity-time-form.component.html',
+  styleUrls: ['./activity-time-form.component.scss']
 })
-export class ActivityFormComponent implements OnInit {
-  model: AddActivityCommand | ModifyActivityCommand = { color: '#4e73df'} as any;
+export class ActivityTimeFormComponent implements OnInit {
+  model: AddActivityTimeCommand = {} as any;
   id: number | null = null;
-  returnUrl : string = '/panel/activities';
+  timeScheduleId: number | null = null;
+  returnUrl: string = '/panel/activity-times';
+  DayOfWeek = DayOfWeek;
+  days(): Array<any> {
+    var values = Object.values(this.DayOfWeek);
+    return values.slice(values.length / 2);
+  }
+
   constructor(
     private toastr: ToastrService,
     private router: Router,
-    private client: ActivitiesClient,
+    private client: ActivityTimesClient,
     private spinner: NgxSpinnerService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) {
+
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+
     const timeScheduleId = this.route.snapshot.queryParams['timescheduleid'];
     if (timeScheduleId){
       this.returnUrl= '/panel/time-schedules/assign/'+ timeScheduleId;
+      this.model.timeScheduleId = timeScheduleId;
     }
 
     if (this.id) {
@@ -50,21 +61,23 @@ export class ActivityFormComponent implements OnInit {
     if (!form.valid) {
       return;
     }
-    
+
+    this.model.day = Number.parseInt(this.model.day.toString());
+
     if (this.id) {
       this.update(
         {
           id: this.id,
           title: this.model.title,
-          description: this.model.description,
-          color: this.model.color
+          startTime: this.model.startTime,
+          endTime: this.model.endTime
         } as any);
     } else {
       this.add(this.model);
     }
   }
 
-  async add(command: AddActivityCommand) {
+  async add(command: AddActivityTimeCommand) {
     this.spinner.show('main');
     await this.client.add(command).toPromise().then(
       response => {
@@ -77,7 +90,7 @@ export class ActivityFormComponent implements OnInit {
     this.spinner.hide('main');
   }
 
-  async update(command: ModifyActivityCommand) {
+  async update(command: ModifyActivityTimeCommand) {
     this.spinner.show('main');
     await this.client.modfiy(command).toPromise().then(
       response => {
@@ -89,4 +102,5 @@ export class ActivityFormComponent implements OnInit {
     );
     this.spinner.hide('main');
   }
+
 }

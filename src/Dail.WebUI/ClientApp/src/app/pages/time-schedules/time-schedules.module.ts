@@ -7,6 +7,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TimeScheduleFormComponent } from './time-schedule-form/time-schedule-form.component';
 import { TimeScheduleListComponent } from './time-schedule-list/time-schedule-list.component';
 import { AssignerComponent } from './assigner/assigner.component';
+import { DndModule } from 'ngx-drag-drop';
 
 @NgModule({
   declarations: [
@@ -18,8 +19,9 @@ import { AssignerComponent } from './assigner/assigner.component';
     CoreModule,
     CommonModule,
     FormsModule,
+    DndModule,
     NgxDatatableModule,
     TimeSchedulesRoutingModule
-  ]
+  ],
 })
 export class TimeSchedulesModule { }

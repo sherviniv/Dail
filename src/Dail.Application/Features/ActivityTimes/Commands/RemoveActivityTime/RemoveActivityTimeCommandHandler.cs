@@ -32,7 +32,7 @@ public class RemoveActivityTimeCommandHandler : IRequestHandler<RemoveActivityTi
     /// <returns></returns>
     public async Task<Unit> Handle(RemoveActivityTimeCommand request, CancellationToken cancellationToken)
     {
-        var model = await _context.Activities.FirstOrDefaultAsync(c=> c.Id == request.Id);
+        var model = await _context.ActivityTimes.FirstOrDefaultAsync(c=> c.Id == request.Id);
 
         if (model == null)
         {
@@ -47,7 +47,7 @@ public class RemoveActivityTimeCommandHandler : IRequestHandler<RemoveActivityTi
                    _localizer.GetString(MessageCodes.AccessDenied)?.Value ?? "", System.Net.HttpStatusCode.Forbidden);
         }
 
-        _context.Activities.Remove(model);
+        _context.ActivityTimes.Remove(model);
         await _context.SaveChangesAsync();
         return Unit.Value;
     }

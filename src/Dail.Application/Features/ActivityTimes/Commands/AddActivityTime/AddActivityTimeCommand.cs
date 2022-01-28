@@ -7,4 +7,5 @@ public class AddActivityTimeCommand : IRequest<int>
     public string Title { get; set; }
     public string StartTime { get; set; }
     public string EndTime { get; set; }
+    public int TimeScheduleId { get; set; }
 }

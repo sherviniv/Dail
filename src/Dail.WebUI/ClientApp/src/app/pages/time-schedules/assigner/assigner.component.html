@@ -1,4 +1,68 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 mb-0 text-gray-800">{{model.title}}</h3>
-    <a [routerLink]="['/panel/time-schedules']" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" > بازگشت</a>
+<div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h3 class="h3 mb-0 text-gray-800">{{model.title}}</h3>
+        <a [routerLink]="['/panel/time-schedules']" class="d-sm-inline-block btn btn-md col-1 btn-primary shadow-sm">
+            بازگشت</a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card activity-card-holder shadow mb-4">
+                <button class="d-sm-inline-block btn btn-sm btn-success shadow-sm col-2"
+                 [routerLink]="['/panel/activities/add']" [queryParams]="{timescheduleid: id}">
+                 <i class="fas fa-plus fa-md text-white-50"></i> کار جدید</button>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="card col-2 mr-2 mb-2" *ngFor="let uact of model.unAssignedActivities"
+                            [dndDraggable]="uact" dndEffectAllowed="move"
+                            [ngStyle]="{'border-bottom':'0.25rem solid'+ uact.color}">
+                            <div class="activity-card-body">
+                                {{uact.title}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="card activity-card-holder shadow mb-4" style="overflow: hidden;"
+             [routerLink]="['/panel/activity-times/add']" [queryParams]="{timescheduleid: id}">
+                <button class="d-sm-inline-block btn btn-sm btn-info shadow-sm col-12" ><i class="fas fa-plus fa-sm text-white-50"></i> افزودن زمان مورد علاقه</button>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="card shadow mb-4 trash-box" (dndDrop)="removeItem($event)" dndDropzone dndEffectAllowed="move">
+                <div class="card-body text-center">
+                    <i class="fas fa-trash fa-2x text-danger mt-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="row">
+
+            <div *ngFor="let dayname of days()" dndDropzone>
+                <h6 class="m-0 font-weight-bold text-primary mb-2">{{dayname | weekdaytostring}}</h6>
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <p class="text-gray-100 p-3 bg-dark m-0">.text-gray-100</p>
+                    </div>
+                </div>
+
+                <!-- <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Custom Font Size Utilities</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-xs">.text-xs</p>
+                        <p class="text-lg mb-0">.text-lg</p>
+                    </div>
+                </div> -->
+
+            </div>
+
+        </div>
+    </div>
+
 </div>

@@ -29,6 +29,7 @@
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
     "ngx-colors": "^2.10.2",
+    "ngx-drag-drop": "^13.0.0",
     "ngx-spinner": "^13.0.0",
     "ngx-toastr": "^14.2.1",
     "oidc-client": "^1.11.5",
