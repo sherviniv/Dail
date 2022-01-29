@@ -28,17 +28,11 @@ public class AssignActivityCommandHandler : IRequestHandler<AssignActivityComman
     /// <returns></returns>
     public async Task<Unit> Handle(AssignActivityCommand request, CancellationToken cancellationToken)
     {
-        //Get all selected activities
-        var activitiesIds = request.Assigns.Select(c => c.ActivityId).ToList();
-        var models = await _context.Activities.Where(c =>
-        c.CreatedBy == _currentUserService.UserId && activitiesIds.Contains(c.Id)).ToListAsync();
+        var acitvity = await _context.Activities.FirstOrDefaultAsync(c=> c.Id == request.ActivityId);
 
-        //assign activities to selected times
-        foreach (var activity in models)
+        if(acitvity != null)
         {
-            int? timeId = request.Assigns
-                .FirstOrDefault(c => c.ActivityId == activity.Id)!.ActivityTimeId;
-            activity.ActivityTimeId = timeId;
+            acitvity.ActivityTimeId = request.ActivityTimeId;
         }
 
         await _context.SaveChangesAsync();

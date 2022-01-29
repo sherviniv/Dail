@@ -32,12 +32,18 @@ public class RemoveActivityTimeCommandHandler : IRequestHandler<RemoveActivityTi
     /// <returns></returns>
     public async Task<Unit> Handle(RemoveActivityTimeCommand request, CancellationToken cancellationToken)
     {
-        var model = await _context.ActivityTimes.FirstOrDefaultAsync(c=> c.Id == request.Id);
+        var model = await _context.ActivityTimes.Include(c=> c.Activities).FirstOrDefaultAsync(c=> c.Id == request.Id);
 
         if (model == null)
         {
             throw new DailException(MessageCodes.NotFound,
                    _localizer.GetString(MessageCodes.NotFound)?.Value ?? "", System.Net.HttpStatusCode.NotFound);
+        }
+
+        if(model.Activities != null && model.Activities.Count > 0)
+        {
+            throw new DailException(MessageCodes.ActivityTimeCascadeData,
+                 _localizer.GetString(MessageCodes.ActivityTimeCascadeData)?.Value ?? "", System.Net.HttpStatusCode.BadRequest);
         }
 
         //Each user has only access to their own Activities

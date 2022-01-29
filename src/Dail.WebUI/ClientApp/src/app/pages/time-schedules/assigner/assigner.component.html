@@ -9,13 +9,15 @@
         <div class="col-lg-8">
             <div class="card activity-card-holder shadow mb-4">
                 <button class="d-sm-inline-block btn btn-sm btn-success shadow-sm col-2"
-                 [routerLink]="['/panel/activities/add']" [queryParams]="{timescheduleid: id}">
-                 <i class="fas fa-plus fa-md text-white-50"></i> کار جدید</button>
-                <div class="card-body">
+                    [routerLink]="['/panel/activities/add']" [queryParams]="{timescheduleid: id}">
+                    <i class="fas fa-plus fa-md text-white-50"></i> کار جدید</button>
+                <div class="card-body" [dndDropzone]="['activity']" dndEffectAllowed="move"
+                    (dndDrop)="removeTime($event)">
                     <div class="row">
                         <div class="card col-2 mr-2 mb-2" *ngFor="let uact of model.unAssignedActivities"
-                            [dndDraggable]="uact" dndEffectAllowed="move"
-                            [ngStyle]="{'border-bottom':'0.25rem solid'+ uact.color}">
+                            [dndEffectAllowed]="'move'" [dndType]="'activity'"
+                            (dndMoved)="onActivityMoved(uact, model.unAssignedActivities!, 'move')"
+                            [dndDraggable]="uact" [ngStyle]="{'border-bottom':'0.25rem solid'+ uact.color}">
                             <div class="activity-card-body">
                                 {{uact.title}}
                             </div>
@@ -26,8 +28,9 @@
         </div>
         <div class="col-lg-2">
             <div class="card activity-card-holder shadow mb-4" style="overflow: hidden;"
-             [routerLink]="['/panel/activity-times/add']" [queryParams]="{timescheduleid: id}">
-                <button class="d-sm-inline-block btn btn-sm btn-info shadow-sm col-12" ><i class="fas fa-plus fa-sm text-white-50"></i> افزودن زمان مورد علاقه</button>
+                [routerLink]="['/panel/activity-times/add']" [queryParams]="{timescheduleid: id}">
+                <button class="d-sm-inline-block btn btn-sm btn-info shadow-sm col-12"><i
+                        class="fas fa-plus fa-sm text-white-50"></i> افزودن زمان مورد علاقه</button>
             </div>
         </div>
         <div class="col-lg-2">
@@ -42,24 +45,41 @@
     <div>
         <div class="row">
 
-            <div *ngFor="let dayname of days()" dndDropzone>
-                <h6 class="m-0 font-weight-bold text-primary mb-2">{{dayname | weekdaytostring}}</h6>
-                <div class="card mb-1">
-                    <div class="card-body">
-                        <p class="text-gray-100 p-3 bg-dark m-0">.text-gray-100</p>
+            <div class="card" *ngFor="let day of days()" [dndDropzone]="['activityTime']"
+                (dndDrop)="moveActivityTime($event,day)" style="width: 14%;">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary mb-2">{{day | weekdaytostring}}</h5>
+                </div>
+                <div class=" mb-1">
+                    <div class="card-body" style="padding: 0px;">
+                        <ng-container *ngFor="let at of sortBy('startTime',model.activityTimes!, day) ">
+                            <div [dndDraggable]="at" *ngIf="at.day == day" [dndEffectAllowed]="'move'"
+                                [dndType]="'activityTime'">
+                                <div style="min-height: 20px;padding: 12px;">
+                                    <small class="m-0 p-0 font-weight-bold text-primary mb-2">
+                                        {{at.title}} - از {{at.startTime}} تا {{at.endTime}}
+                                    </small>
+                                </div>
+                                <div style="min-height: 50px;" dndEffectAllowed="move" [dndDropzone]="['activity']"
+                                    (dndDrop)="setTime($event,at)">
+
+                                    <div class="mb-1" *ngFor="let atchild of at.activities" 
+                                        [dndDraggable]="atchild" [dndEffectAllowed]="'move'" [dndType]="'activity'"
+                                        (dndMoved)="onActivityMoved(atchild, at.activities!, 'move')"
+                                        [ngStyle]="{'border-bottom':'0.25rem solid'+ atchild.color}">
+                                        <div class="activity-card-body" style="overflow-y: auto;">
+                                            <b>{{atchild.title}}</b><br>
+                                            <small>
+                                                {{atchild.description}}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
-
-                <!-- <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Custom Font Size Utilities</h6>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-xs">.text-xs</p>
-                        <p class="text-lg mb-0">.text-lg</p>
-                    </div>
-                </div> -->
-
             </div>
 
         </div>

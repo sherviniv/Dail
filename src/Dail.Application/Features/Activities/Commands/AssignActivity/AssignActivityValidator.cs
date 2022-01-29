@@ -10,9 +10,6 @@ public class AssignActivityValidator : AbstractValidator<AssignActivityCommand>
 {
     public AssignActivityValidator(IStringLocalizer<MessagesLocalizer> localizer)
     {
-        RuleFor(p => p.Assigns)
-               .NotNull()
-               .NotEmpty()
-               .WithMessage(localizer.GetString(MessageCodes.IsRequired)?.Value);
+ 
     }
 }

@@ -4,5 +4,6 @@ using MediatR;
 namespace Dail.Application.Features.Activities.Commands.AssignActivity;
 public class AssignActivityCommand : IRequest<Unit>
 {
-    public List<AssignActivityDTO> Assigns { get; set; }
+    public int ActivityId { get; set; }
+    public int? ActivityTimeId { get; set; }
 }

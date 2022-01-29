@@ -9,4 +9,5 @@ public static class MessageCodes
     public const string IsRequired = nameof(IsRequired);
     public const string MaxLength = nameof(MaxLength);
     public const string MinLength = nameof(MaxLength);
+    public const string ActivityTimeCascadeData = nameof(ActivityTimeCascadeData);
 }

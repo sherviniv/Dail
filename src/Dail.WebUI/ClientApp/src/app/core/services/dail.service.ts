@@ -202,6 +202,62 @@ export class ActivitiesClient {
      * @param body (optional) 
      * @return Success
      */
+    assign(body: AssignActivityCommand | undefined): Observable<Unit> {
+        let url_ = this.baseUrl + "/api/Activities/Assign";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAssign(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAssign(<any>response_);
+                } catch (e) {
+                    return <Observable<Unit>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Unit>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAssign(response: HttpResponseBase): Observable<Unit> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Unit.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Unit>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     modfiy(body: ModifyActivityCommand | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/Activities/Modfiy";
         url_ = url_.replace(/[?&]$/, "");
@@ -1584,6 +1640,46 @@ export class AddTimeScheduleCommand implements IAddTimeScheduleCommand {
 export interface IAddTimeScheduleCommand {
     title: string | undefined;
     description: string | undefined;
+}
+
+export class AssignActivityCommand implements IAssignActivityCommand {
+    activityId!: number;
+    activityTimeId!: number | undefined;
+
+    constructor(data?: IAssignActivityCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.activityId = _data["activityId"];
+            this.activityTimeId = _data["activityTimeId"];
+        }
+    }
+
+    static fromJS(data: any): AssignActivityCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssignActivityCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["activityId"] = this.activityId;
+        data["activityTimeId"] = this.activityTimeId;
+        return data;
+    }
+}
+
+export interface IAssignActivityCommand {
+    activityId: number;
+    activityTimeId: number | undefined;
 }
 
 export enum DayOfWeek {
