@@ -48,7 +48,7 @@
                         </div>
                         <div class="row no-gutters align-items-center" *ngIf="model.totalActivities > 0">
                             <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{assignedActsPercentage}}%</div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{assignedActsPercentage | number : '1.0-0'}}%</div>
                             </div>
                             <div class="col">
                                 <div class="progress progress-sm ml-2">

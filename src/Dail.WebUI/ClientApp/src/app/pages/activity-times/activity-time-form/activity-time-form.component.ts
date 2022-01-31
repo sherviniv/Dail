@@ -70,7 +70,8 @@ export class ActivityTimeFormComponent implements OnInit {
           id: this.id,
           title: this.model.title,
           startTime: this.model.startTime,
-          endTime: this.model.endTime
+          endTime: this.model.endTime,
+          day: this.model.day
         } as any);
     } else {
       this.add(this.model);

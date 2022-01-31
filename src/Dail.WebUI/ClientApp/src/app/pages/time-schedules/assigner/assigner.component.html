@@ -19,7 +19,10 @@
                             (dndMoved)="onActivityMoved(uact, model.unAssignedActivities!, 'move')"
                             [dndDraggable]="uact" [ngStyle]="{'border-bottom':'0.25rem solid'+ uact.color}">
                             <div class="activity-card-body">
+                                <a [routerLink]="['/panel/activities/edit/'+uact.id]"
+                                [queryParams]="{timescheduleid: id}">
                                 {{uact.title}}
+                            </a>
                             </div>
                         </div>
                     </div>
@@ -43,32 +46,42 @@
     </div>
 
     <div>
+        <a class="d-sm-inline-block btn btn-md  btn-light shadow-sm mb-2" (click)="horizontalView = !horizontalView">
+            نمایش : {{horizontalView ? 'سطری' : 'جدول'}} 
+        </a>
+
         <div class="row">
 
             <div class="card" *ngFor="let day of days()" [dndDropzone]="['activityTime']"
-                (dndDrop)="moveActivityTime($event,day)" style="width: 14%;">
+                (dndDrop)="moveActivityTime($event,day)" [ngClass]="(horizontalView)?'col-12':'day-width'">
                 <div class="card-header py-3">
                     <h5 class="m-0 font-weight-bold text-primary mb-2">{{day | weekdaytostring}}</h5>
                 </div>
-                <div class=" mb-1">
+                <div>
                     <div class="card-body" style="padding: 0px;">
                         <ng-container *ngFor="let at of sortBy('startTime',model.activityTimes!, day) ">
                             <div [dndDraggable]="at" *ngIf="at.day == day" [dndEffectAllowed]="'move'"
-                                [dndType]="'activityTime'">
+                                [dndType]="'activityTime'" style="background-color: #e7eaf7;">
                                 <div style="min-height: 20px;padding: 12px;">
-                                    <small class="m-0 p-0 font-weight-bold text-primary mb-2">
-                                        {{at.title}} - از {{at.startTime}} تا {{at.endTime}}
-                                    </small>
+                                    <a [routerLink]="['/panel/activity-times/edit/'+at.id]"
+                                        [queryParams]="{timescheduleid: id}">
+                                        <small class="m-0 p-0 font-weight-bold text-primary mb-2">
+                                            {{at.title}} - از {{at.startTime}} تا {{at.endTime}}
+                                        </small>
+                                    </a>
                                 </div>
                                 <div style="min-height: 50px;" dndEffectAllowed="move" [dndDropzone]="['activity']"
                                     (dndDrop)="setTime($event,at)">
 
-                                    <div class="mb-1" *ngFor="let atchild of at.activities" 
-                                        [dndDraggable]="atchild" [dndEffectAllowed]="'move'" [dndType]="'activity'"
+                                    <div class="" *ngFor="let atchild of at.activities" [dndDraggable]="atchild"
+                                        [dndEffectAllowed]="'move'" [dndType]="'activity'"
                                         (dndMoved)="onActivityMoved(atchild, at.activities!, 'move')"
                                         [ngStyle]="{'border-bottom':'0.25rem solid'+ atchild.color}">
                                         <div class="activity-card-body" style="overflow-y: auto;">
-                                            <b>{{atchild.title}}</b><br>
+                                            <a [routerLink]="['/panel/activities/edit/'+atchild.id]"
+                                                [queryParams]="{timescheduleid: id}">
+                                                <b>{{atchild.title}}</b><br>
+                                            </a>
                                             <small>
                                                 {{atchild.description}}
                                             </small>

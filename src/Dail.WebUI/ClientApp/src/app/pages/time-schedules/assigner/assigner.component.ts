@@ -13,6 +13,7 @@ export class AssignerComponent implements OnInit {
   id: number | null = null;
   model: TimeScheduleViewModel = {} as any;
   DayOfWeek = DayOfWeek;
+  horizontalView : boolean = false;
   days(): Array<any> {
     var values = Object.values(this.DayOfWeek);
     return values.slice(values.length / 2);
