@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C4E3C50F-EE26-477A-8C1B-120B0F383C42}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{070557D2-9255-4969-94C4-83D9E3F92211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Laxi.Application.UnitTests", "tests\Laxi.Application.UnitTests\Laxi.Application.UnitTests.csproj", "{940CAC7C-9A36-40F9-9548-159F958CB72E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,10 @@ Global
 		{C4E3C50F-EE26-477A-8C1B-120B0F383C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4E3C50F-EE26-477A-8C1B-120B0F383C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4E3C50F-EE26-477A-8C1B-120B0F383C42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{940CAC7C-9A36-40F9-9548-159F958CB72E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{940CAC7C-9A36-40F9-9548-159F958CB72E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{940CAC7C-9A36-40F9-9548-159F958CB72E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{940CAC7C-9A36-40F9-9548-159F958CB72E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,7 @@ Global
 		{21BF2828-E3B9-4D0A-9CA9-18A16EB58C1C} = {70E61172-737B-451A-9FE4-2EEA4EE4CB81}
 		{59CC7901-C4B1-4256-87E9-CD812B7ED80E} = {70E61172-737B-451A-9FE4-2EEA4EE4CB81}
 		{E9CD11C4-85BF-42E9-8A12-C5189C571F00} = {70E61172-737B-451A-9FE4-2EEA4EE4CB81}
+		{940CAC7C-9A36-40F9-9548-159F958CB72E} = {070557D2-9255-4969-94C4-83D9E3F92211}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D585E3D9-F00F-4164-8398-75E3A14A43E9}
