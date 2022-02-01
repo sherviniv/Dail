@@ -17,4 +17,8 @@
     <PackageReference Include="Moq" Version="4.16.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dail.Application\Dail.Application.csproj" />
+  </ItemGroup>
+
 </Project>
