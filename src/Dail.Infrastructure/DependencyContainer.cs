@@ -23,16 +23,25 @@ public static class DependencyContainer
 
 
         services.AddEntityFrameworkSqlServer();
-        services.AddDbContext<DailContext>((serviceProvider, options) =>
+        if (appSettings.UseInMemoryDatabase)
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                      b =>
-                      {
-                          b.MigrationsAssembly(typeof(DailContext).Assembly.FullName);
-                      });
+            services.AddDbContext<DailContext>(options =>
+                options.UseInMemoryDatabase("DailDb"));
+        }
+        else
+        {
+            services.AddDbContext<DailContext>((serviceProvider, options) =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                          b =>
+                          {
+                              b.MigrationsAssembly(typeof(DailContext).Assembly.FullName);
+                          });
 
-            options.UseInternalServiceProvider(serviceProvider);
-        });
+                options.UseInternalServiceProvider(serviceProvider);
+            });
+        }
+
 
         services.AddIdentityCore<ApplicationUser>(options =>
         {
